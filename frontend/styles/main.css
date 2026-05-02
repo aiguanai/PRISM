@@ -1,0 +1,208 @@
+/* ─── CSS Variables ─────────────────────────────────────────────────────── */
+:root {
+  --navy: #1B2A4A;
+  --slate: #2C3E50;
+  --white: #FFFFFF;
+  --accent: #2980B9;
+  --success: #27AE60;
+  --warning: #E67E22;
+  --danger: #C0392B;
+  --danger-dark: #8E1B0C;
+  --bg: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --border: #DEE2E6;
+  --muted: #7F8C8D;
+  --text: #2C3E50;
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-badge: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+  --transition: 200ms ease;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Screen transitions ─────────────────────────────────────────────────── */
+.screen { min-height: 100vh; }
+.screen.active.slide-in {
+  animation: slideIn 0.35s ease forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 3px;
+}
+
+.tagline {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── Pill badges (header) ───────────────────────────────────────────────── */
+.pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+}
+
+.pill-sdg {
+  background: #EBF5FB;
+  color: var(--accent);
+  border: 1px solid #AED6F1;
+}
+
+.pill-bert {
+  background: #EAF4EC;
+  color: var(--success);
+  border: 1px solid #A9DFBF;
+}
+
+/* ─── Utility buttons ────────────────────────────────────────────────────── */
+.btn-new {
+  background: var(--navy);
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  font-family: var(--font);
+}
+.btn-new:hover { background: #253660; }
+.btn-new:active { transform: scale(0.97); }
+
+/* ─── Status badges ──────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.badge-flagged { background: #FADBD8; color: var(--danger); border: 1px solid #F1948A; }
+.badge-safe    { background: #D5F5E3; color: var(--success); border: 1px solid #82E0AA; }
+.badge-cat     { color: white; border: none; }
+.badge-high    { background: var(--danger); }
+.badge-medium  { background: var(--warning); }
+.badge-low     { background: var(--success); }
+
+/* ─── Error banner ───────────────────────────────────────────────────────── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #FADBD8;
+  border: 1px solid #F1948A;
+  border-radius: var(--radius-card);
+  padding: 14px 20px;
+  margin: 24px auto;
+  max-width: 640px;
+}
+
+.error-banner-msg {
+  font-size: 0.9rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.btn-retry {
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font);
+  transition: background var(--transition), transform var(--transition);
+}
+.btn-retry:hover { background: #A93226; }
+.btn-retry:active { transform: scale(0.97); }
+
+.btn-retry-inline {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: var(--font);
+}
+
+/* ─── Empty / error states ───────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.empty-state.error-state { color: var(--danger); }
+
+/* ─── Tooltip (via title attribute — native) ─────────────────────────────── */
+[title] { cursor: help; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #BDC3C7; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #95A5A6; }

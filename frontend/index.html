@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM — Loan Agreement Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/upload.css">
+  <link rel="stylesheet" href="styles/results.css">
+</head>
+<body>
+
+<!-- ─── UPLOAD SCREEN ──────────────────────────────────────────────────────── -->
+<div id="upload-screen" class="screen active">
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">PRISM</span>
+      <span class="tagline">Loan Agreement Intelligence</span>
+    </div>
+    <div class="header-right">
+      <span class="pill pill-sdg" title="Supports UN Sustainable Development Goal 9">SDG 9</span>
+      <span class="pill pill-bert">Powered by Legal-BERT</span>
+    </div>
+  </header>
+
+  <main class="upload-main">
+    <div class="hero">
+      <h1 class="hero-title">Is your loan agreement safe?</h1>
+      <p class="hero-sub">
+        PRISM analyzes every clause in your MSME loan document for predatory patterns,
+        hidden traps, and RBI violations — in under 60 seconds.
+      </p>
+    </div>
+
+    <!-- Drop zone -->
+    <div id="drop-zone" class="drop-zone" role="button" tabindex="0"
+         aria-label="Upload loan agreement document">
+      <div class="dz-inner" id="dz-default">
+        <div class="upload-icon-anim">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="#EBF5FB"/>
+            <path d="M32 14v26M21 25l11-11 11 11" stroke="#2980B9" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 46h32" stroke="#2980B9" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="dz-main-text">Drop your loan agreement here</p>
+        <p class="dz-sub-text">PDF, Word, or Image — up to 10 MB</p>
+      </div>
+      <div class="dz-inner dz-hover-state" id="dz-hover" style="display:none;">
+        <p class="dz-main-text">Release to analyze</p>
+      </div>
+      <div class="dz-inner dz-selected-state" id="dz-selected" style="display:none;">
+        <div class="file-icon" id="file-icon">📄</div>
+        <div class="file-meta">
+          <div class="file-name" id="file-name"></div>
+          <div class="file-size" id="file-size"></div>
+        </div>
+        <div class="file-check">✓</div>
+      </div>
+      <input type="file" id="file-input" accept=".pdf,.docx,.jpg,.jpeg,.png"
+             style="position:absolute;opacity:0;width:0;height:0;" tabindex="-1">
+    </div>
+
+    <div id="dz-error" class="dz-error" role="alert" aria-live="polite"></div>
+
+    <button id="analyze-btn" class="btn-analyze" disabled>
+      Analyze Document
+    </button>
+
+    <button id="demo-btn" class="btn-demo">
+      Try with a sample predatory clause →
+    </button>
+  </main>
+
+  <!-- Progress section (shown during processing) -->
+  <div id="progress-section" class="progress-section" style="display:none;">
+    <div class="steps-track">
+      <div class="step-item" data-stage="extracting">
+        <div class="step-node"><span class="step-check">✓</span></div>
+        <div class="step-name">Extracting</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" data-stage="segmenting">
+        <div class="step-node"><span class="step-check">✓</span></div>
+        <div class="step-name">Segmenting</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" data-stage="classifying">
+        <div class="step-node"><span class="step-check">✓</span></div>
+        <div class="step-name">Classifying</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" data-stage="validating">
+        <div class="step-node"><span class="step-check">✓</span></div>
+        <div class="step-name">Validating</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" data-stage="generating_report">
+        <div class="step-node"><span class="step-check">✓</span></div>
+        <div class="step-name">Report</div>
+      </div>
+    </div>
+
+    <div class="progress-bar-row">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-pct" id="progress-pct">0%</span>
+    </div>
+    <div class="progress-stage" id="progress-stage-text">Preparing analysis…</div>
+    <div class="progress-time" id="progress-time"></div>
+  </div>
+
+  <!-- Error banner -->
+  <div id="error-banner" class="error-banner" role="alert" style="display:none;">
+    <div class="error-banner-msg" id="error-banner-msg"></div>
+    <button id="error-retry-btn" class="btn-retry">↺ Try Again</button>
+  </div>
+</div>
+
+
+<!-- ─── RESULTS SCREEN ─────────────────────────────────────────────────────── -->
+<div id="results-screen" class="screen results-screen" style="display:none;">
+  <header class="header header-results">
+    <div class="header-left">
+      <span class="logo">PRISM</span>
+      <span class="tagline">Loan Agreement Intelligence</span>
+    </div>
+    <div class="header-right">
+      <button id="new-analysis-btn" class="btn-new">+ New Analysis</button>
+    </div>
+  </header>
+
+  <div class="results-layout">
+
+    <!-- Left sidebar -->
+    <aside class="sidebar-left" id="sidebar-left">
+      <div class="risk-gauge-wrap">
+        <svg id="risk-svg" viewBox="0 0 120 120" class="risk-svg" aria-label="Risk score">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#ecf0f1" stroke-width="10"/>
+          <circle id="risk-arc" cx="60" cy="60" r="50" fill="none"
+                  stroke="#27AE60" stroke-width="10"
+                  stroke-dasharray="314" stroke-dashoffset="314"
+                  stroke-linecap="round"
+                  transform="rotate(-90 60 60)"/>
+          <text id="risk-score-num" x="60" y="57" text-anchor="middle"
+                font-size="24" font-weight="700" fill="#1B2A4A"
+                font-family="Inter, sans-serif">–</text>
+          <text x="60" y="73" text-anchor="middle" font-size="8"
+                fill="#95a5a6" font-family="Inter, sans-serif"
+                letter-spacing="1">RISK SCORE</text>
+        </svg>
+        <div id="risk-badge" class="risk-badge">—</div>
+      </div>
+
+      <div class="sidebar-stats">
+        <div class="ss-row">
+          <span class="ss-label">Clauses Analyzed</span>
+          <span id="ss-total" class="ss-val">—</span>
+        </div>
+        <div class="ss-row ss-flagged">
+          <span class="ss-label">Flagged</span>
+          <span id="ss-flagged" class="ss-val">—</span>
+        </div>
+        <div class="ss-row ss-violation">
+          <span class="ss-label">RBI Violations</span>
+          <span id="ss-violations" class="ss-val">—</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-label">Filter by Category</div>
+        <button class="filter-btn active" data-filter="all">All Clauses</button>
+        <button class="filter-btn" data-filter="BALLOON_PAYMENT"
+                title="A large lump-sum payment required at loan maturity">Balloon Payment</button>
+        <button class="filter-btn" data-filter="UNLAWFUL_PENALTY"
+                title="Penalties exceeding RBI-permitted limits">Unlawful Penalty</button>
+        <button class="filter-btn" data-filter="HIDDEN_FEE"
+                title="Charges not disclosed upfront">Hidden Fee</button>
+        <button class="filter-btn" data-filter="UNILATERAL_RATE_CHANGE"
+                title="Lender changes rate without consent">Rate Change</button>
+        <button class="filter-btn" data-filter="COLLATERAL_OVERREACH"
+                title="Claims over assets beyond agreed collateral">Collateral</button>
+        <button class="filter-btn" data-filter="ARBITRATION_WAIVER"
+                title="Restricts borrower's right to legal recourse">Arbitration</button>
+        <button class="filter-btn filter-safe" data-filter="safe">Safe Clauses</button>
+      </div>
+
+      <button id="download-btn" class="btn-download-report">
+        ↓ Download Full Report PDF
+      </button>
+    </aside>
+
+    <!-- Center panel -->
+    <main class="center-panel" id="center-panel">
+      <div class="center-header">
+        <h2 id="center-title">Clause Analysis</h2>
+        <span id="center-filename" class="center-fn"></span>
+      </div>
+      <div id="clause-list" class="clause-list" role="list">
+        <!-- Cards injected by results.js -->
+      </div>
+    </main>
+
+    <!-- Right sidebar -->
+    <aside class="sidebar-right" id="sidebar-right">
+      <section class="rs-section">
+        <h3 class="rs-heading">Regulatory Intelligence</h3>
+        <div id="reg-intel-content" class="reg-intel-content">
+          <p class="rs-hint">Click a flagged clause to see applicable RBI rules.</p>
+        </div>
+      </section>
+
+      <section class="rs-section">
+        <h3 class="rs-heading">Rules Triggered</h3>
+        <div id="triggered-rules" class="triggered-rules-wrap"></div>
+      </section>
+
+      <section class="rs-section">
+        <h3 class="rs-heading">Key Risk Factors</h3>
+        <div id="key-risks" class="key-risks-wrap"></div>
+      </section>
+
+      <section class="rs-section">
+        <h3 class="rs-heading">Severity Heatmap</h3>
+        <div id="heatmap" class="heatmap-wrap"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script src="src/main.js"></script>
+<script src="src/upload.js"></script>
+<script src="src/results.js"></script>
+<script src="src/report.js"></script>
+</body>
+</html>
