@@ -1,25 +1,86 @@
-/* ─── CSS Variables ─────────────────────────────────────────────────────── */
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
 :root {
-  --navy: #1B2A4A;
-  --slate: #2C3E50;
-  --white: #FFFFFF;
-  --accent: #2980B9;
-  --success: #27AE60;
-  --warning: #E67E22;
-  --danger: #C0392B;
-  --danger-dark: #8E1B0C;
-  --bg: #F8F9FA;
+  /* Brand palette */
+  --primary:  #1B2E4B;
+  --teal:     #2A7F6F;
+  --danger:   #B03A2E;
+  --warning:  #C47A1E;
+
+  /* Backgrounds */
+  --bg:             #F8F7F4;
+  --surface:        #FFFFFF;
+  --surface-raised: #FDFCFA;
+
+  /* Borders */
+  --border:        #E8E6E0;
+  --border-subtle: #F0EEE8;
+
+  /* Text */
+  --text:       #2C2C2A;
+  --text-muted: #6B6B62;
+
+  /* Tints — semi-transparent overlays that work on any surface */
+  --teal-tint:    rgba(42, 127, 111, 0.10);
+  --teal-tint-md: rgba(42, 127, 111, 0.18);
+  --danger-tint:  rgba(176, 58, 46,  0.09);
+  --warning-tint: rgba(196, 122, 30, 0.10);
+
+  /* Legacy aliases — keeps existing component CSS working without changes */
+  --navy:    #1B2E4B;
+  --slate:   #2C2C2A;
+  --accent:  #2A7F6F;
+  --success: #2A7F6F;
+  --white:   #FFFFFF;
   --card-bg: #FFFFFF;
-  --border: #DEE2E6;
-  --muted: #7F8C8D;
-  --text: #2C3E50;
-  --radius-card: 12px;
-  --radius-btn: 8px;
+  --muted:   #6B6B62;
+
+  /* Elevation */
+  --shadow:       0 2px 8px  rgba(28, 28, 24, 0.07);
+  --shadow-hover: 0 4px 16px rgba(28, 28, 24, 0.11);
+
+  /* Misc */
+  --transition:   200ms ease;
+  --font:         'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-card:  12px;
+  --radius-btn:   8px;
   --radius-badge: 6px;
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
-  --transition: 200ms ease;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ─── Dark mode overrides ────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #3AAFA0;
+    --teal:    #3AAFA0;
+    --danger:  #E05C52;
+    --warning: #D4924A;
+
+    --bg:             #141C26;
+    --surface:        #1E2A38;
+    --surface-raised: #243346;
+
+    --border:        #2E3D50;
+    --border-subtle: #263444;
+
+    --text:       #E8E6E0;
+    --text-muted: #8A9BAC;
+
+    --teal-tint:    rgba(58, 175, 160, 0.14);
+    --teal-tint-md: rgba(58, 175, 160, 0.22);
+    --danger-tint:  rgba(224, 92, 82,  0.14);
+    --warning-tint: rgba(212, 146, 74, 0.14);
+
+    /* Legacy aliases remapped for dark */
+    --navy:    #E8E6E0;   /* heading/logo text → warm white */
+    --slate:   #E8E6E0;
+    --accent:  #3AAFA0;
+    --success: #3AAFA0;
+    --white:   #1E2A38;   /* "white" surfaces → dark surface */
+    --card-bg: #1E2A38;
+    --muted:   #8A9BAC;
+
+    --shadow:       0 2px 8px  rgba(0, 0, 0, 0.30);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
@@ -38,9 +99,7 @@ body {
 
 /* ─── Screen transitions ─────────────────────────────────────────────────── */
 .screen { min-height: 100vh; }
-.screen.active.slide-in {
-  animation: slideIn 0.35s ease forwards;
-}
+.screen.active.slide-in { animation: slideIn 0.35s ease forwards; }
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(24px); }
   to   { opacity: 1; transform: translateX(0); }
@@ -52,19 +111,16 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
-  background: var(--white);
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.header-left  { display: flex; align-items: center; gap: 12px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
 
 .logo {
   font-size: 1.5rem;
@@ -75,18 +131,12 @@ body {
 
 .tagline {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: 400;
   letter-spacing: 0.5px;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ─── Pill badges (header) ───────────────────────────────────────────────── */
+/* ─── Header pills ───────────────────────────────────────────────────────── */
 .pill {
   font-size: 0.72rem;
   font-weight: 600;
@@ -96,31 +146,33 @@ body {
 }
 
 .pill-sdg {
-  background: #EBF5FB;
-  color: var(--accent);
-  border: 1px solid #AED6F1;
+  background: var(--teal-tint);
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  opacity: 0.85;
 }
 
 .pill-bert {
-  background: #EAF4EC;
-  color: var(--success);
-  border: 1px solid #A9DFBF;
+  background: var(--teal-tint);
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  opacity: 0.75;
 }
 
 /* ─── Utility buttons ────────────────────────────────────────────────────── */
 .btn-new {
-  background: var(--navy);
-  color: white;
+  background: var(--primary);
+  color: var(--white);
   border: none;
   border-radius: var(--radius-btn);
   padding: 8px 16px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition), transform var(--transition);
   font-family: var(--font);
+  transition: opacity var(--transition), transform var(--transition);
 }
-.btn-new:hover { background: #253660; }
+.btn-new:hover  { opacity: 0.88; }
 .btn-new:active { transform: scale(0.97); }
 
 /* ─── Status badges ──────────────────────────────────────────────────────── */
@@ -134,12 +186,25 @@ body {
   letter-spacing: 0.3px;
   white-space: nowrap;
 }
-.badge-flagged { background: #FADBD8; color: var(--danger); border: 1px solid #F1948A; }
-.badge-safe    { background: #D5F5E3; color: var(--success); border: 1px solid #82E0AA; }
-.badge-cat     { color: white; border: none; }
-.badge-high    { background: var(--danger); }
-.badge-medium  { background: var(--warning); }
-.badge-low     { background: var(--success); }
+
+.badge-flagged {
+  background: var(--danger-tint);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  opacity: 0.9;
+}
+
+.badge-safe {
+  background: var(--teal-tint);
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  opacity: 0.9;
+}
+
+.badge-cat    { color: #fff; border: none; }
+.badge-high   { background: var(--danger); }
+.badge-medium { background: var(--warning); }
+.badge-low    { background: var(--teal); }
 
 /* ─── Error banner ───────────────────────────────────────────────────────── */
 .error-banner {
@@ -147,23 +212,19 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: #FADBD8;
-  border: 1px solid #F1948A;
+  background: var(--danger-tint);
+  border: 1px solid var(--danger);
   border-radius: var(--radius-card);
   padding: 14px 20px;
   margin: 24px auto;
   max-width: 640px;
 }
 
-.error-banner-msg {
-  font-size: 0.9rem;
-  color: var(--danger);
-  font-weight: 500;
-}
+.error-banner-msg { font-size: 0.9rem; color: var(--danger); font-weight: 500; }
 
 .btn-retry {
   background: var(--danger);
-  color: white;
+  color: #fff;
   border: none;
   border-radius: var(--radius-btn);
   padding: 8px 16px;
@@ -172,14 +233,14 @@ body {
   cursor: pointer;
   white-space: nowrap;
   font-family: var(--font);
-  transition: background var(--transition), transform var(--transition);
+  transition: opacity var(--transition), transform var(--transition);
 }
-.btn-retry:hover { background: #A93226; }
+.btn-retry:hover  { opacity: 0.88; }
 .btn-retry:active { transform: scale(0.97); }
 
 .btn-retry-inline {
-  background: var(--accent);
-  color: white;
+  background: var(--teal);
+  color: #fff;
   border: none;
   border-radius: var(--radius-btn);
   padding: 8px 16px;
@@ -193,16 +254,13 @@ body {
 .empty-state {
   text-align: center;
   padding: 48px 24px;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.95rem;
 }
 .empty-state.error-state { color: var(--danger); }
 
-/* ─── Tooltip (via title attribute — native) ─────────────────────────────── */
-[title] { cursor: help; }
-
 /* ─── Scrollbar ─────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #BDC3C7; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #95A5A6; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

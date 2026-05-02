@@ -10,24 +10,24 @@ const CATEGORY_DISPLAY = {
 };
 
 const CATEGORY_COLORS = {
-  HIGH: '#C0392B',
-  MEDIUM: '#E67E22',
+  HIGH:   '#B03A2E',
+  MEDIUM: '#C47A1E',
 };
 
 const RISK_COLORS = {
-  'SAFE': '#27AE60',
-  'LOW RISK': '#2ECC71',
-  'MODERATE RISK': '#E67E22',
-  'HIGH RISK': '#E74C3C',
-  'CRITICAL': '#8E1B0C',
+  'SAFE':          '#2A7F6F',
+  'LOW RISK':      '#2A7F6F',
+  'MODERATE RISK': '#C47A1E',
+  'HIGH RISK':     '#B03A2E',
+  'CRITICAL':      '#7A2018',
 };
 
 const RISK_BG = {
-  'SAFE': '#d5f5e3',
-  'LOW RISK': '#eafaf1',
-  'MODERATE RISK': '#fdebd0',
-  'HIGH RISK': '#fadbd8',
-  'CRITICAL': '#f5b7b1',
+  'SAFE':          '#E8F5F2',
+  'LOW RISK':      '#E8F5F2',
+  'MODERATE RISK': '#FDF3E7',
+  'HIGH RISK':     '#F9EDEC',
+  'CRITICAL':      '#F5E5E4',
 };
 
 let allClauseData = [];

@@ -53,11 +53,11 @@ def generate_risk_meter_svg(score: int) -> str:
 
     # Color zones (score 0–100 mapped to angle offset 0–180)
     zones = [
-        (0, 30, "#27AE60"),
-        (30, 50, "#F1C40F"),
-        (50, 70, "#E67E22"),
-        (70, 85, "#E74C3C"),
-        (85, 100, "#922B21"),
+        (0,  30, "#2A7F6F"),
+        (30, 50, "#3A9A7A"),
+        (50, 70, "#C47A1E"),
+        (70, 85, "#B03A2E"),
+        (85, 100, "#7A2018"),
     ]
 
     arc_svgs = []
@@ -73,15 +73,15 @@ def generate_risk_meter_svg(score: int) -> str:
     nx, ny = _point(cx, cy, needle_len, needle_angle)
 
     # Risk level color
-    risk_color = "#27AE60"
+    risk_color = "#2A7F6F"
     if score > 85:
-        risk_color = "#922B21"
+        risk_color = "#7A2018"
     elif score > 70:
-        risk_color = "#E74C3C"
+        risk_color = "#B03A2E"
     elif score > 50:
-        risk_color = "#E67E22"
+        risk_color = "#C47A1E"
     elif score > 30:
-        risk_color = "#F1C40F"
+        risk_color = "#3A9A7A"
 
     svg = f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
   <!-- Track -->
@@ -90,9 +90,9 @@ def generate_risk_meter_svg(score: int) -> str:
   {"".join(arc_svgs)}
   <!-- Needle -->
   <line x1="{cx}" y1="{cy}" x2="{nx:.2f}" y2="{ny:.2f}"
-        stroke="#2C3E50" stroke-width="4" stroke-linecap="round"/>
+        stroke="#2C2C2A" stroke-width="4" stroke-linecap="round"/>
   <!-- Hub -->
-  <circle cx="{cx}" cy="{cy}" r="10" fill="#2C3E50"/>
+  <circle cx="{cx}" cy="{cy}" r="10" fill="#2C2C2A"/>
   <circle cx="{cx}" cy="{cy}" r="5" fill="white"/>
   <!-- Score -->
   <text x="{cx}" y="{cy + 38}" text-anchor="middle"
@@ -103,7 +103,7 @@ def generate_risk_meter_svg(score: int) -> str:
         letter-spacing="1">RISK SCORE</text>
   <!-- Labels -->
   <text x="28" y="{cy + 16}" text-anchor="middle"
-        font-family="Arial,sans-serif" font-size="9" fill="#27AE60">SAFE</text>
+        font-family="Arial,sans-serif" font-size="9" fill="#2A7F6F">SAFE</text>
   <text x="{width - 28}" y="{cy + 16}" text-anchor="middle"
         font-family="Arial,sans-serif" font-size="9" fill="#922B21">CRITICAL</text>
 </svg>"""
@@ -121,26 +121,26 @@ def _risk_label(score: float) -> str:
 
 def _risk_color(score: float) -> str:
     if score <= 30:
-        return "#27AE60"
+        return "#2A7F6F"
     if score <= 50:
-        return "#F1C40F"
+        return "#3A9A7A"
     if score <= 70:
-        return "#E67E22"
+        return "#C47A1E"
     if score <= 85:
-        return "#E74C3C"
-    return "#922B21"
+        return "#B03A2E"
+    return "#7A2018"
 
 
 def _risk_bg(score: float) -> str:
     if score <= 30:
-        return "#d5f5e3"
+        return "#E8F5F2"
     if score <= 50:
-        return "#fef9e7"
+        return "#E8F5F2"
     if score <= 70:
-        return "#fdebd0"
+        return "#FDF3E7"
     if score <= 85:
-        return "#fadbd8"
-    return "#f1948a33"
+        return "#F9EDEC"
+    return "#F5E5E4"
 
 
 # ─── HTML helpers ─────────────────────────────────────────────────────────────
@@ -166,16 +166,16 @@ def _category_badge(name: str, severity: str) -> str:
 def _verdict_badge(verdict: str) -> str:
     if verdict == "VIOLATION":
         return (
-            '<span style="background:#C0392B;color:white;padding:2px 10px;'
+            '<span style="background:#B03A2E;color:white;padding:2px 10px;'
             'border-radius:4px;font-size:9pt;font-weight:bold;">⚠ VIOLATION</span>'
         )
     if verdict == "POSSIBLE_VIOLATION":
         return (
-            '<span style="background:#E67E22;color:white;padding:2px 10px;'
+            '<span style="background:#C47A1E;color:white;padding:2px 10px;'
             'border-radius:4px;font-size:9pt;font-weight:bold;">⚑ POSSIBLE VIOLATION</span>'
         )
     return (
-        '<span style="background:#27AE60;color:white;padding:2px 10px;'
+        '<span style="background:#2A7F6F;color:white;padding:2px 10px;'
         'border-radius:4px;font-size:9pt;">✓ COMPLIANT</span>'
     )
 
@@ -197,7 +197,7 @@ def _highlight_clause_text(text: str, spans: list[dict]) -> str:
     in_highlight = False
     for i, char in enumerate(text):
         if i in highlights and not in_highlight:
-            result.append('<mark style="background:#fdebd0;border-bottom:2px solid #E67E22;">')
+            result.append('<mark style="background:#FDF3E7;border-bottom:2px solid #C47A1E;">')
             in_highlight = True
         elif i not in highlights and in_highlight:
             result.append("</mark>")
@@ -214,7 +214,7 @@ def _highlight_clause_text(text: str, spans: list[dict]) -> str:
 
 def _confidence_bar(confidence: float) -> str:
     pct = round(confidence * 100)
-    color = "#E74C3C" if pct >= 70 else "#E67E22" if pct >= 55 else "#F1C40F"
+    color = "#B03A2E" if pct >= 70 else "#C47A1E" if pct >= 55 else "#C47A1E"
     return f"""
     <div style="background:#ecf0f1;border-radius:4px;height:8px;margin:4px 0;">
       <div style="background:{color};width:{pct}%;height:100%;border-radius:4px;"></div>
@@ -282,8 +282,8 @@ def _build_html(analysis: dict) -> str:
             font-family: Arial, sans-serif;
             font-size: 11pt;
             font-weight: bold;
-            color: #1B2A4A;
-            border-bottom: 2px solid #1B2A4A;
+            color: #1B2E4B;
+            border-bottom: 2px solid #1B2E4B;
             padding-bottom: 4px;
         }
         @top-right {
@@ -291,7 +291,7 @@ def _build_html(analysis: dict) -> str:
             font-family: Arial, sans-serif;
             font-size: 9pt;
             color: #7f8c8d;
-            border-bottom: 2px solid #1B2A4A;
+            border-bottom: 2px solid #1B2E4B;
             padding-bottom: 4px;
         }
         @bottom-left {
@@ -317,7 +317,7 @@ def _build_html(analysis: dict) -> str:
     body {
         font-family: Georgia, serif;
         font-size: 10pt;
-        color: #2C3E50;
+        color: #2C2C2A;
         line-height: 1.6;
         margin: 0;
     }
@@ -336,7 +336,7 @@ def _build_html(analysis: dict) -> str:
         font-family: Arial, sans-serif;
         font-size: 36pt;
         font-weight: bold;
-        color: #1B2A4A;
+        color: #1B2E4B;
         letter-spacing: 6px;
         margin-bottom: 4px;
     }
@@ -350,7 +350,7 @@ def _build_html(analysis: dict) -> str:
     .cover-title {
         font-family: Arial, sans-serif;
         font-size: 16pt;
-        color: #2C3E50;
+        color: #2C2C2A;
         text-align: center;
         margin-bottom: 6px;
     }
@@ -391,7 +391,7 @@ def _build_html(analysis: dict) -> str:
         font-family: Arial, sans-serif;
         font-size: 22pt;
         font-weight: bold;
-        color: #1B2A4A;
+        color: #1B2E4B;
         line-height: 1;
     }
     .stat-label {
@@ -416,21 +416,21 @@ def _build_html(analysis: dict) -> str:
     h1 {
         font-family: Arial, sans-serif;
         font-size: 16pt;
-        color: #1B2A4A;
-        border-bottom: 3px solid #1B2A4A;
+        color: #1B2E4B;
+        border-bottom: 3px solid #1B2E4B;
         padding-bottom: 6px;
         margin-top: 20px;
     }
     h2 {
         font-family: Arial, sans-serif;
         font-size: 13pt;
-        color: #2C3E50;
+        color: #2C2C2A;
         margin-top: 16px;
     }
     h3 {
         font-family: Arial, sans-serif;
         font-size: 11pt;
-        color: #2C3E50;
+        color: #2C2C2A;
     }
 
     .page-break { page-break-before: always; }
@@ -438,7 +438,7 @@ def _build_html(analysis: dict) -> str:
     /* Category breakdown table */
     .cat-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
     .cat-table th {
-        background: #1B2A4A;
+        background: #1B2E4B;
         color: white;
         font-family: Arial, sans-serif;
         font-size: 9pt;
@@ -454,22 +454,22 @@ def _build_html(analysis: dict) -> str:
 
     /* Clause analysis box */
     .clause-box {
-        border-left: 4px solid #E67E22;
+        border-left: 4px solid #C47A1E;
         background: #f8f9fa;
         border-radius: 0 8px 8px 0;
         padding: 12px 16px;
         margin: 8px 0;
         page-break-inside: avoid;
     }
-    .clause-box.high { border-left-color: #C0392B; }
-    .clause-box.medium { border-left-color: #E67E22; }
-    .clause-box.safe { border-left-color: #27AE60; background: #f0faf4; }
+    .clause-box.high { border-left-color: #B03A2E; }
+    .clause-box.medium { border-left-color: #C47A1E; }
+    .clause-box.safe { border-left-color: #2A7F6F; background: #E8F5F2; }
 
     .clause-header {
         font-family: Arial, sans-serif;
         font-size: 11pt;
         font-weight: bold;
-        color: #1B2A4A;
+        color: #1B2E4B;
         margin-bottom: 8px;
     }
 
@@ -493,14 +493,14 @@ def _build_html(analysis: dict) -> str:
     .rule-id {
         font-family: "Courier New", monospace;
         font-weight: bold;
-        color: #1B2A4A;
+        color: #1B2E4B;
         font-size: 8pt;
     }
 
     /* Safe clauses table */
     .safe-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 9pt; }
     .safe-table th {
-        background: #27AE60;
+        background: #2A7F6F;
         color: white;
         font-family: Arial, sans-serif;
         padding: 6px 10px;
@@ -510,11 +510,11 @@ def _build_html(analysis: dict) -> str:
         padding: 5px 10px;
         border-bottom: 1px solid #d5f5e3;
     }
-    .safe-table tr:nth-child(even) td { background: #f0faf4; }
+    .safe-table tr:nth-child(even) td { background: #E8F5F2; }
 
     .notice-critical {
         background: #fadbd8;
-        border-left: 4px solid #C0392B;
+        border-left: 4px solid #B03A2E;
         border-radius: 0 8px 8px 0;
         padding: 12px 16px;
         margin: 8px 0;
@@ -551,11 +551,11 @@ def _build_html(analysis: dict) -> str:
           <div class="stat-label">Clauses Analysed</div>
         </div>
         <div class="stat-box">
-          <div class="stat-num" style="color:#E74C3C;">{flagged}</div>
+          <div class="stat-num" style="color:#B03A2E;">{flagged}</div>
           <div class="stat-label">Clauses Flagged</div>
         </div>
         <div class="stat-box">
-          <div class="stat-num" style="color:#C0392B;">{violations}</div>
+          <div class="stat-num" style="color:#B03A2E;">{violations}</div>
           <div class="stat-label">RBI Violations</div>
         </div>
         <div class="stat-box">
@@ -581,7 +581,7 @@ def _build_html(analysis: dict) -> str:
         cnt = cat_counts.get(cat_name, 0)
         sev_color = SEVERITY_COLORS.get(
             "HIGH" if cat_name in ["BALLOON_PAYMENT", "UNLAWFUL_PENALTY", "UNILATERAL_RATE_CHANGE", "COLLATERAL_OVERREACH"] else "MEDIUM",
-            "#E67E22"
+            "#C47A1E"
         )
         bar = _category_bar(cnt, max(flagged, 1), sev_color)
         cat_rows += f"""
@@ -613,7 +613,7 @@ def _build_html(analysis: dict) -> str:
             #{i} — {html.escape(c.get("heading") or c.get("clause_id",""))}
             &nbsp;{_severity_badge(primary_sev)} &nbsp;{_category_badge(primary_cat, primary_sev)}
           </div>
-          <div style="font-family:'Courier New',monospace;font-size:9pt;color:#2C3E50;">
+          <div style="font-family:'Courier New',monospace;font-size:9pt;color:#2C2C2A;">
             {html.escape(excerpt)}
           </div>
         </div>"""
@@ -665,7 +665,7 @@ def _build_html(analysis: dict) -> str:
               &nbsp;{_verdict_badge(rr["verdict"])}<br>
               <strong>{html.escape(rr["rule_description"])}</strong><br>
               <span style="color:#7f8c8d;font-size:8pt;">Source: {html.escape(rr["source"])}</span><br>
-              <span style="color:#2C3E50;">{html.escape(rr.get("plain_rule",""))}</span>
+              <span style="color:#2C2C2A;">{html.escape(rr.get("plain_rule",""))}</span>
             </div>"""
 
         clause_text_html = _highlight_clause_text(
@@ -742,7 +742,7 @@ def _build_html(analysis: dict) -> str:
     safe_index = f"""
     <div class="page-break">
       <h1>Safe Clauses Index</h1>
-      <p style="color:#27AE60;font-family:Arial;font-size:10pt;">
+      <p style="color:#2A7F6F;font-family:Arial;font-size:10pt;">
         ✓ The following {len(safe_clauses)} clause(s) did not trigger any predatory pattern detectors.
       </p>
       <table class="safe-table">

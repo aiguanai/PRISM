@@ -14,7 +14,7 @@
   flex: 1;
 }
 
-/* ─── Hero section ───────────────────────────────────────────────────────── */
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
 .hero {
   text-align: center;
   max-width: 600px;
@@ -31,7 +31,7 @@
 
 .hero-sub {
   font-size: 1.05rem;
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.6;
   max-width: 520px;
   margin: 0 auto;
@@ -43,9 +43,9 @@
   width: 100%;
   max-width: 580px;
   height: 280px;
-  border: 2px dashed #BDC3C7;
+  border: 2px dashed var(--border);
   border-radius: var(--radius-card);
-  background: var(--white);
+  background: var(--surface);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -58,27 +58,27 @@
 
 .drop-zone:hover,
 .drop-zone:focus-visible {
-  border-color: var(--accent);
+  border-color: var(--teal);
   border-style: solid;
-  background: #EBF5FB;
+  background: var(--teal-tint);
 }
 
 .drop-zone.dragover {
-  border-color: var(--accent);
+  border-color: var(--teal);
   border-style: solid;
-  background: #D6EAF8;
+  background: var(--teal-tint-md);
   animation: pulse-border 1s ease infinite;
 }
 
 .drop-zone.has-file {
-  border-color: var(--success);
+  border-color: var(--teal);
   border-style: solid;
-  background: #F0FAF4;
+  background: var(--teal-tint);
 }
 
 @keyframes pulse-border {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(41,128,185,0.3); }
-  50%       { box-shadow: 0 0 0 6px rgba(41,128,185,0.1); }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(42, 127, 111, 0.30); }
+  50%       { box-shadow: 0 0 0 6px rgba(42, 127, 111, 0.08); }
 }
 
 .dz-inner {
@@ -93,7 +93,7 @@
   padding: 24px;
 }
 
-/* Upload icon animation */
+/* Upload icon — teal in both modes via CSS filter on SVG rect fill */
 .upload-icon-anim svg {
   width: 72px;
   height: 72px;
@@ -101,27 +101,19 @@
   display: block;
 }
 
+/* Override the SVG colors to match theme */
+.upload-icon-anim svg rect { fill: var(--teal-tint); }
+.upload-icon-anim svg path { stroke: var(--teal); }
+
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-8px); }
 }
 
-.dz-main-text {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--slate);
-}
+.dz-main-text { font-size: 1.05rem; font-weight: 600; color: var(--slate); }
+.dz-sub-text  { font-size: 0.85rem; color: var(--text-muted); }
 
-.dz-sub-text {
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-/* Hover state */
-.dz-hover-state .dz-main-text {
-  color: var(--accent);
-  font-size: 1.1rem;
-}
+.dz-hover-state .dz-main-text { color: var(--teal); font-size: 1.1rem; }
 
 /* Selected state */
 .dz-selected-state {
@@ -131,39 +123,23 @@
   padding: 24px 32px;
 }
 
-.file-icon {
-  font-size: 2.5rem;
-  flex-shrink: 0;
-}
+.file-icon { font-size: 2.5rem; flex-shrink: 0; }
 
-.file-meta {
-  text-align: left;
-  flex: 1;
-  min-width: 0;
-}
+.file-meta { text-align: left; flex: 1; min-width: 0; }
 
 .file-name {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--slate);
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 280px;
 }
 
-.file-size {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-top: 2px;
-}
+.file-size { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
-.file-check {
-  font-size: 1.8rem;
-  color: var(--success);
-  font-weight: 700;
-  flex-shrink: 0;
-}
+.file-check { font-size: 1.8rem; color: var(--teal); font-weight: 700; flex-shrink: 0; }
 
 /* ─── Error under drop zone ──────────────────────────────────────────────── */
 .dz-error {
@@ -183,25 +159,25 @@
   width: 100%;
   max-width: 580px;
   padding: 16px;
-  background: var(--navy);
-  color: white;
+  background: var(--primary);
+  color: #fff;
   border: none;
   border-radius: var(--radius-btn);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition), transform var(--transition), opacity var(--transition);
+  transition: opacity var(--transition), transform var(--transition);
   margin-top: 8px;
   font-family: var(--font);
   letter-spacing: 0.3px;
 }
 
-.btn-analyze:hover:not(:disabled) { background: #253660; }
+.btn-analyze:hover:not(:disabled) { opacity: 0.88; }
 .btn-analyze:active:not(:disabled) { transform: scale(0.97); }
 .btn-analyze:disabled {
-  background: #BDC3C7;
+  background: var(--border);
+  color: var(--text-muted);
   cursor: not-allowed;
-  opacity: 0.7;
 }
 .btn-analyze.pressed { transform: scale(0.97); }
 
@@ -209,18 +185,18 @@
 .btn-demo {
   background: transparent;
   border: none;
-  color: var(--accent);
+  color: var(--teal);
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   padding: 10px;
   margin-top: 8px;
-  transition: color var(--transition);
+  transition: opacity var(--transition);
   font-family: var(--font);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.btn-demo:hover { color: #1F618D; }
+.btn-demo:hover { opacity: 0.75; }
 
 /* ─── Progress section ───────────────────────────────────────────────────── */
 .progress-section {
@@ -253,49 +229,47 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid #BDC3C7;
-  background: white;
+  border: 2px solid var(--border);
+  background: var(--surface);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition);
-  position: relative;
 }
 
 .step-check { font-size: 0.85rem; color: transparent; transition: color var(--transition); }
 
 .step-node.active {
-  border-color: var(--accent);
-  background: #EBF5FB;
+  border-color: var(--teal);
+  background: var(--teal-tint);
   animation: ring-pulse 1.2s ease infinite;
 }
-.step-node.active .step-check { color: var(--accent); }
+.step-node.active .step-check { color: var(--teal); }
 
 .step-node.done {
-  border-color: var(--success);
-  background: var(--success);
+  border-color: var(--teal);
+  background: var(--teal);
 }
-.step-node.done .step-check { color: white; }
+.step-node.done .step-check { color: #fff; }
 
 @keyframes ring-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(41,128,185,0.4); }
-  50%       { box-shadow: 0 0 0 6px rgba(41,128,185,0.1); }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(42, 127, 111, 0.40); }
+  50%       { box-shadow: 0 0 0 6px rgba(42, 127, 111, 0.08); }
 }
 
 .step-name {
   font-size: 0.72rem;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .step-connector {
   flex: 1;
   height: 2px;
-  background: #BDC3C7;
+  background: var(--border);
   margin: 0 2px;
   margin-bottom: 22px;
-  transition: background var(--transition);
 }
 
 /* Progress bar */
@@ -310,14 +284,14 @@
 .progress-track {
   flex: 1;
   height: 8px;
-  background: #ECF0F1;
+  background: var(--border-subtle);
   border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #1ABC9C);
+  background: linear-gradient(90deg, var(--teal), #25A09A);
   border-radius: 4px;
   width: 0%;
   transition: width 0.5s ease;
@@ -333,23 +307,18 @@
 
 .progress-stage {
   font-size: 0.95rem;
-  color: var(--slate);
+  color: var(--text);
   font-weight: 500;
   text-align: center;
   min-height: 24px;
 }
 
-.progress-time {
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-align: center;
-}
+.progress-time { font-size: 0.8rem; color: var(--text-muted); text-align: center; }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .hero-title { font-size: 1.8rem; }
-  .steps-track { gap: 0; }
-  .step-name { font-size: 0.62rem; }
-  .step-node { width: 28px; height: 28px; }
-  .drop-zone { height: 220px; }
+  .hero-title  { font-size: 1.8rem; }
+  .step-name   { font-size: 0.62rem; }
+  .step-node   { width: 28px; height: 28px; }
+  .drop-zone   { height: 220px; }
 }
