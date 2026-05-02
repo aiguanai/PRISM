@@ -52,9 +52,9 @@ RISK_LEVELS = {
 }
 
 SEVERITY_COLORS = {
-    "HIGH":   "#B03A2E",
-    "MEDIUM": "#C47A1E",
-    "LOW":    "#2A7F6F",
+    "HIGH":   "#DC2626",
+    "MEDIUM": "#D97706",
+    "LOW":    "#059669",
 }
 
 CATEGORY_SEVERITY = {

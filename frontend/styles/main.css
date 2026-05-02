@@ -1,42 +1,46 @@
 /* ─── Design Tokens ─────────────────────────────────────────────────────── */
 :root {
-  /* Brand palette */
-  --primary:  #1B2E4B;
-  --teal:     #2A7F6F;
-  --danger:   #B03A2E;
-  --warning:  #C47A1E;
+  /* Action / Brand */
+  --primary:  #2563EB;   /* Royal Blue — buttons, brand marks */
+  --accent:   #2563EB;   /* Highlight / link / active UI — same as primary in light */
 
-  /* Backgrounds */
-  --bg:             #F8F7F4;
-  --surface:        #FFFFFF;
-  --surface-raised: #FDFCFA;
+  /* Status */
+  --teal:    #059669;    /* Emerald — safe clauses, compliant verdicts */
+  --danger:  #DC2626;    /* Crimson — high-risk violations */
+  --warning: #D97706;    /* Amber   — suspicious / medium-risk */
+
+  /* Surfaces */
+  --bg:             #F8FAFC;   /* off-white canvas */
+  --surface:        #FFFFFF;   /* cards, panels */
+  --surface-raised: #F8FAFC;
 
   /* Borders */
-  --border:        #E8E6E0;
-  --border-subtle: #F0EEE8;
+  --border:        #E2E8F0;
+  --border-subtle: #F1F5F9;
 
   /* Text */
-  --text:       #2C2C2A;
-  --text-muted: #6B6B62;
+  --text:       #0F172A;   /* deep navy-black */
+  --text-muted: #64748B;   /* slate-500 */
 
-  /* Tints — semi-transparent overlays that work on any surface */
-  --teal-tint:    rgba(42, 127, 111, 0.10);
-  --teal-tint-md: rgba(42, 127, 111, 0.18);
-  --danger-tint:  rgba(176, 58, 46,  0.09);
-  --warning-tint: rgba(196, 122, 30, 0.10);
+  /* Tints — semi-transparent overlays */
+  --accent-tint:    rgba(37, 99,  235, 0.08);
+  --accent-tint-md: rgba(37, 99,  235, 0.15);
+  --teal-tint:      rgba(5,  150, 105, 0.10);
+  --teal-tint-md:   rgba(5,  150, 105, 0.18);
+  --danger-tint:    rgba(220, 38,  38,  0.09);
+  --warning-tint:   rgba(217, 119,  6,  0.10);
 
-  /* Legacy aliases — keeps existing component CSS working without changes */
-  --navy:    #1B2E4B;
-  --slate:   #2C2C2A;
-  --accent:  #2A7F6F;
-  --success: #2A7F6F;
+  /* Legacy aliases — existing component CSS keeps working */
+  --navy:    #0F172A;
+  --slate:   #0F172A;
+  --success: #059669;
   --white:   #FFFFFF;
   --card-bg: #FFFFFF;
-  --muted:   #6B6B62;
+  --muted:   #64748B;
 
   /* Elevation */
-  --shadow:       0 2px 8px  rgba(28, 28, 24, 0.07);
-  --shadow-hover: 0 4px 16px rgba(28, 28, 24, 0.11);
+  --shadow:       0 1px 3px  rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 4px 12px rgba(15, 23, 42, 0.12), 0 2px 4px rgba(15, 23, 42, 0.07);
 
   /* Misc */
   --transition:   200ms ease;
@@ -46,48 +50,49 @@
   --radius-badge: 6px;
 }
 
-/* ─── Dark mode overrides ────────────────────────────────────────────────── */
+/* ─── Dark mode ──────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary: #3AAFA0;
-    --teal:    #3AAFA0;
-    --danger:  #E05C52;
-    --warning: #D4924A;
+    --primary:  #2563EB;   /* Keep royal blue for button backgrounds */
+    --accent:   #60A5FA;   /* Soft Blue — highlights, links, active states */
 
-    --bg:             #141C26;
-    --surface:        #1E2A38;
-    --surface-raised: #243346;
+    --teal:    #34D399;    /* Mint    — safe indicators */
+    --danger:  #F87171;    /* Coral   — violations */
+    --warning: #FBBF24;    /* Gold    — cautions */
 
-    --border:        #2E3D50;
-    --border-subtle: #263444;
+    --bg:             #0F172A;   /* deep navy */
+    --surface:        #1E293B;   /* slate */
+    --surface-raised: #243347;
 
-    --text:       #E8E6E0;
-    --text-muted: #8A9BAC;
+    --border:        #334155;
+    --border-subtle: #1E293B;
 
-    --teal-tint:    rgba(58, 175, 160, 0.14);
-    --teal-tint-md: rgba(58, 175, 160, 0.22);
-    --danger-tint:  rgba(224, 92, 82,  0.14);
-    --warning-tint: rgba(212, 146, 74, 0.14);
+    --text:       #F1F5F9;
+    --text-muted: #94A3B8;
 
-    /* Legacy aliases remapped for dark */
-    --navy:    #E8E6E0;   /* heading/logo text → warm white */
-    --slate:   #E8E6E0;
-    --accent:  #3AAFA0;
-    --success: #3AAFA0;
-    --white:   #1E2A38;   /* "white" surfaces → dark surface */
-    --card-bg: #1E2A38;
-    --muted:   #8A9BAC;
+    --accent-tint:    rgba(96,  165, 250, 0.12);
+    --accent-tint-md: rgba(96,  165, 250, 0.20);
+    --teal-tint:      rgba(52,  211, 153, 0.12);
+    --teal-tint-md:   rgba(52,  211, 153, 0.20);
+    --danger-tint:    rgba(248, 113, 113, 0.12);
+    --warning-tint:   rgba(251, 191,  36, 0.10);
 
-    --shadow:       0 2px 8px  rgba(0, 0, 0, 0.30);
-    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.45);
+    /* Legacy aliases */
+    --navy:    #F1F5F9;    /* heading text → near-white */
+    --slate:   #F1F5F9;
+    --success: #34D399;
+    --white:   #FFFFFF;    /* stays white — used for text on colored buttons */
+    --card-bg: #1E293B;
+    --muted:   #94A3B8;
+
+    --shadow:       0 1px 3px  rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.20);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.25);
   }
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; scroll-behavior: smooth; }
-
 body {
   font-family: var(--font);
   color: var(--text);
@@ -118,7 +123,6 @@ body {
   z-index: 100;
   box-shadow: var(--shadow);
 }
-
 .header-left  { display: flex; align-items: center; gap: 12px; }
 .header-right { display: flex; align-items: center; gap: 8px; }
 
@@ -128,15 +132,13 @@ body {
   color: var(--navy);
   letter-spacing: 3px;
 }
-
 .tagline {
   font-size: 0.78rem;
   color: var(--text-muted);
-  font-weight: 400;
   letter-spacing: 0.5px;
 }
 
-/* ─── Header pills ───────────────────────────────────────────────────────── */
+/* ─── Pills ──────────────────────────────────────────────────────────────── */
 .pill {
   font-size: 0.72rem;
   font-weight: 600;
@@ -144,25 +146,23 @@ body {
   border-radius: 100px;
   letter-spacing: 0.3px;
 }
-
 .pill-sdg {
+  background: var(--accent-tint);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  opacity: 0.9;
+}
+.pill-bert {
   background: var(--teal-tint);
   color: var(--teal);
   border: 1px solid var(--teal);
   opacity: 0.85;
 }
 
-.pill-bert {
-  background: var(--teal-tint);
-  color: var(--teal);
-  border: 1px solid var(--teal);
-  opacity: 0.75;
-}
-
-/* ─── Utility buttons ────────────────────────────────────────────────────── */
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
 .btn-new {
   background: var(--primary);
-  color: var(--white);
+  color: #fff;
   border: none;
   border-radius: var(--radius-btn);
   padding: 8px 16px;
@@ -175,7 +175,7 @@ body {
 .btn-new:hover  { opacity: 0.88; }
 .btn-new:active { transform: scale(0.97); }
 
-/* ─── Status badges ──────────────────────────────────────────────────────── */
+/* ─── Badges ─────────────────────────────────────────────────────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -186,21 +186,18 @@ body {
   letter-spacing: 0.3px;
   white-space: nowrap;
 }
-
 .badge-flagged {
   background: var(--danger-tint);
   color: var(--danger);
   border: 1px solid var(--danger);
   opacity: 0.9;
 }
-
 .badge-safe {
   background: var(--teal-tint);
   color: var(--teal);
   border: 1px solid var(--teal);
   opacity: 0.9;
 }
-
 .badge-cat    { color: #fff; border: none; }
 .badge-high   { background: var(--danger); }
 .badge-medium { background: var(--warning); }
@@ -219,7 +216,6 @@ body {
   margin: 24px auto;
   max-width: 640px;
 }
-
 .error-banner-msg { font-size: 0.9rem; color: var(--danger); font-weight: 500; }
 
 .btn-retry {
@@ -239,7 +235,7 @@ body {
 .btn-retry:active { transform: scale(0.97); }
 
 .btn-retry-inline {
-  background: var(--teal);
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: var(--radius-btn);
@@ -250,13 +246,8 @@ body {
   font-family: var(--font);
 }
 
-/* ─── Empty / error states ───────────────────────────────────────────────── */
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
+/* ─── Empty states ───────────────────────────────────────────────────────── */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text-muted); font-size: 0.95rem; }
 .empty-state.error-state { color: var(--danger); }
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────────── */

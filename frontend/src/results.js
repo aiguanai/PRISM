@@ -10,24 +10,24 @@ const CATEGORY_DISPLAY = {
 };
 
 const CATEGORY_COLORS = {
-  HIGH:   '#B03A2E',
-  MEDIUM: '#C47A1E',
+  HIGH:   '#DC2626',
+  MEDIUM: '#D97706',
 };
 
 const RISK_COLORS = {
-  'SAFE':          '#2A7F6F',
-  'LOW RISK':      '#2A7F6F',
-  'MODERATE RISK': '#C47A1E',
-  'HIGH RISK':     '#B03A2E',
-  'CRITICAL':      '#7A2018',
+  'SAFE':          '#059669',
+  'LOW RISK':      '#059669',
+  'MODERATE RISK': '#D97706',
+  'HIGH RISK':     '#DC2626',
+  'CRITICAL':      '#991B1B',
 };
 
 const RISK_BG = {
-  'SAFE':          '#E8F5F2',
-  'LOW RISK':      '#E8F5F2',
-  'MODERATE RISK': '#FDF3E7',
-  'HIGH RISK':     '#F9EDEC',
-  'CRITICAL':      '#F5E5E4',
+  'SAFE':          '#ECFDF5',
+  'LOW RISK':      '#ECFDF5',
+  'MODERATE RISK': '#FFFBEB',
+  'HIGH RISK':     '#FEF2F2',
+  'CRITICAL':      '#FEE2E2',
 };
 
 let allClauseData = [];
@@ -106,7 +106,7 @@ function animateRiskScore(score, riskLevel) {
 
   const circumference = 314; // 2π × 50
   const targetOffset = circumference - (score / 100) * circumference;
-  const color = RISK_COLORS[riskLevel] || '#27AE60';
+  const color = RISK_COLORS[riskLevel] || '#059669';
 
   if (arc) {
     arc.style.stroke = color;
@@ -254,7 +254,7 @@ function buildClauseCard(ac, index) {
 
   // Confidence bar
   const confPct = Math.round((cls.overall_confidence || 0) * 100);
-  const confColor = confPct >= 70 ? '#C0392B' : confPct >= 55 ? '#E67E22' : '#F1C40F';
+  const confColor = confPct >= 70 ? '#DC2626' : confPct >= 55 ? '#D97706' : '#D97706';
   const confBar = isFlagged ? `
     <div class="conf-bar-wrap">
       <div class="conf-bar-track">
@@ -423,7 +423,7 @@ function renderHeatmap(data) {
     const cnt = catCounts[key] || 0;
     const pct = (cnt / maxCount * 100).toFixed(0);
     const isHigh = ['BALLOON_PAYMENT','UNLAWFUL_PENALTY','UNILATERAL_RATE_CHANGE','COLLATERAL_OVERREACH'].includes(key);
-    const color = isHigh ? '#C0392B' : '#E67E22';
+    const color = isHigh ? '#DC2626' : '#D97706';
     return `
       <div class="hm-row">
         <span class="hm-label">${label}</span>

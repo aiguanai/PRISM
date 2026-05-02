@@ -1,4 +1,4 @@
-/* ─── Upload screen layout ───────────────────────────────────────────────── */
+/* ─── Upload screen ──────────────────────────────────────────────────────── */
 #upload-screen {
   display: flex;
   flex-direction: column;
@@ -15,11 +15,7 @@
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────────────── */
-.hero {
-  text-align: center;
-  max-width: 600px;
-  margin-bottom: 40px;
-}
+.hero { text-align: center; max-width: 600px; margin-bottom: 40px; }
 
 .hero-title {
   font-size: 2.4rem;
@@ -58,18 +54,19 @@
 
 .drop-zone:hover,
 .drop-zone:focus-visible {
-  border-color: var(--teal);
+  border-color: var(--accent);
   border-style: solid;
-  background: var(--teal-tint);
+  background: var(--accent-tint);
 }
 
 .drop-zone.dragover {
-  border-color: var(--teal);
+  border-color: var(--accent);
   border-style: solid;
-  background: var(--teal-tint-md);
+  background: var(--accent-tint-md);
   animation: pulse-border 1s ease infinite;
 }
 
+/* has-file uses teal (success/done signal) */
 .drop-zone.has-file {
   border-color: var(--teal);
   border-style: solid;
@@ -77,8 +74,8 @@
 }
 
 @keyframes pulse-border {
-  0%, 100% { box-shadow: 0 0 0 0   rgba(42, 127, 111, 0.30); }
-  50%       { box-shadow: 0 0 0 6px rgba(42, 127, 111, 0.08); }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(37, 99, 235, 0.30); }
+  50%       { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.08); }
 }
 
 .dz-inner {
@@ -93,29 +90,26 @@
   padding: 24px;
 }
 
-/* Upload icon — teal in both modes via CSS filter on SVG rect fill */
 .upload-icon-anim svg {
   width: 72px;
   height: 72px;
   animation: float 2.4s ease-in-out infinite;
   display: block;
 }
-
-/* Override the SVG colors to match theme */
-.upload-icon-anim svg rect { fill: var(--teal-tint); }
-.upload-icon-anim svg path { stroke: var(--teal); }
+/* SVG colors follow brand accent */
+.upload-icon-anim svg rect { fill: var(--accent-tint); }
+.upload-icon-anim svg path { stroke: var(--accent); }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-8px); }
 }
 
-.dz-main-text { font-size: 1.05rem; font-weight: 600; color: var(--slate); }
+.dz-main-text { font-size: 1.05rem; font-weight: 600; color: var(--text); }
 .dz-sub-text  { font-size: 0.85rem; color: var(--text-muted); }
 
-.dz-hover-state .dz-main-text { color: var(--teal); font-size: 1.1rem; }
+.dz-hover-state .dz-main-text { color: var(--accent); font-size: 1.1rem; }
 
-/* Selected state */
 .dz-selected-state {
   flex-direction: row;
   gap: 16px;
@@ -136,12 +130,12 @@
   text-overflow: ellipsis;
   max-width: 280px;
 }
-
 .file-size { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
 
+/* checkmark uses teal (success) */
 .file-check { font-size: 1.8rem; color: var(--teal); font-weight: 700; flex-shrink: 0; }
 
-/* ─── Error under drop zone ──────────────────────────────────────────────── */
+/* ─── Error ───────────────────────────────────────────────────────────────── */
 .dz-error {
   color: var(--danger);
   font-size: 0.85rem;
@@ -171,30 +165,28 @@
   font-family: var(--font);
   letter-spacing: 0.3px;
 }
-
-.btn-analyze:hover:not(:disabled) { opacity: 0.88; }
+.btn-analyze:hover:not(:disabled)  { opacity: 0.88; }
 .btn-analyze:active:not(:disabled) { transform: scale(0.97); }
 .btn-analyze:disabled {
   background: var(--border);
   color: var(--text-muted);
   cursor: not-allowed;
 }
-.btn-analyze.pressed { transform: scale(0.97); }
 
 /* ─── Demo button ────────────────────────────────────────────────────────── */
 .btn-demo {
   background: transparent;
   border: none;
-  color: var(--teal);
+  color: var(--accent);
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   padding: 10px;
   margin-top: 8px;
-  transition: opacity var(--transition);
   font-family: var(--font);
   text-decoration: underline;
   text-underline-offset: 2px;
+  transition: opacity var(--transition);
 }
 .btn-demo:hover { opacity: 0.75; }
 
@@ -208,11 +200,9 @@
   gap: 24px;
 }
 
-/* Step tracker */
 .steps-track {
   display: flex;
   align-items: center;
-  gap: 0;
   max-width: 620px;
   width: 100%;
 }
@@ -236,16 +226,17 @@
   justify-content: center;
   transition: all var(--transition);
 }
-
 .step-check { font-size: 0.85rem; color: transparent; transition: color var(--transition); }
 
+/* Active step: brand accent (blue) */
 .step-node.active {
-  border-color: var(--teal);
-  background: var(--teal-tint);
+  border-color: var(--accent);
+  background: var(--accent-tint);
   animation: ring-pulse 1.2s ease infinite;
 }
-.step-node.active .step-check { color: var(--teal); }
+.step-node.active .step-check { color: var(--accent); }
 
+/* Done step: teal (success/complete) */
 .step-node.done {
   border-color: var(--teal);
   background: var(--teal);
@@ -253,16 +244,11 @@
 .step-node.done .step-check { color: #fff; }
 
 @keyframes ring-pulse {
-  0%, 100% { box-shadow: 0 0 0 0   rgba(42, 127, 111, 0.40); }
-  50%       { box-shadow: 0 0 0 6px rgba(42, 127, 111, 0.08); }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(37, 99, 235, 0.40); }
+  50%       { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.08); }
 }
 
-.step-name {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
+.step-name { font-size: 0.72rem; font-weight: 500; color: var(--text-muted); white-space: nowrap; }
 
 .step-connector {
   flex: 1;
@@ -289,36 +275,23 @@
   overflow: hidden;
 }
 
+/* Gradient uses primary blue → lighter blue */
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--teal), #25A09A);
+  background: linear-gradient(90deg, var(--primary), #3B82F6);
   border-radius: 4px;
   width: 0%;
   transition: width 0.5s ease;
 }
 
-.progress-pct {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--navy);
-  min-width: 36px;
-  text-align: right;
-}
-
-.progress-stage {
-  font-size: 0.95rem;
-  color: var(--text);
-  font-weight: 500;
-  text-align: center;
-  min-height: 24px;
-}
-
-.progress-time { font-size: 0.8rem; color: var(--text-muted); text-align: center; }
+.progress-pct { font-size: 0.85rem; font-weight: 600; color: var(--navy); min-width: 36px; text-align: right; }
+.progress-stage { font-size: 0.95rem; color: var(--text); font-weight: 500; text-align: center; min-height: 24px; }
+.progress-time  { font-size: 0.8rem; color: var(--text-muted); text-align: center; }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .hero-title  { font-size: 1.8rem; }
-  .step-name   { font-size: 0.62rem; }
-  .step-node   { width: 28px; height: 28px; }
-  .drop-zone   { height: 220px; }
+  .hero-title { font-size: 1.8rem; }
+  .step-name  { font-size: 0.62rem; }
+  .step-node  { width: 28px; height: 28px; }
+  .drop-zone  { height: 220px; }
 }
