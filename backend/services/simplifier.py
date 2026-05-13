@@ -1,101 +1,55 @@
-import asyncio
-import hashlib
-from typing import Optional
-import structlog
-import httpx
+"""
+Converts legalese into plain English with simple substitutions.
 
-from config import (
-    OLLAMA_BASE_URL, OLLAMA_MODEL, OLLAMA_TIMEOUT,
-    TEMPLATE_EXPLANATIONS, USE_OLLAMA
-)
+This is intentionally lightweight — no LLM call. A more powerful simplifier
+can be plugged in later behind the same `simplify_clause(text) -> str` API.
+"""
+import re
 
-log = structlog.get_logger()
+SUBSTITUTIONS = [
+    (r"\bhereinafter\b",      "from now on"),
+    (r"\bhereto\b",           "to this"),
+    (r"\bherein\b",           "in this"),
+    (r"\btherein\b",          "in that"),
+    (r"\bwhereof\b",          "of which"),
+    (r"\bwhereas\b",          "given that"),
+    (r"\bnotwithstanding\b",  "despite"),
+    (r"\bpursuant to\b",      "according to"),
+    (r"\bsubject to\b",       "depending on"),
+    (r"\bshall\b",            "must"),
+    (r"\bin lieu of\b",       "instead of"),
+    (r"\bprior to\b",         "before"),
+    (r"\bsubsequent to\b",    "after"),
+    (r"\baforementioned\b",   "above"),
+    (r"\bsaid\b",             "that"),
+    (r"\bex parte\b",         "from one side"),
+    (r"\bbona fide\b",        "in good faith"),
+    (r"\bper annum\b",        "per year"),
+    (r"\bp\.a\.",             "per year"),
+    (r"\bindemnify\b",        "compensate"),
+    (r"\bindemnification\b",  "compensation"),
+    (r"\barbitration\b",      "private dispute resolution"),
+    (r"\barbitrator\b",       "private judge"),
+    (r"\bterminate\b",        "end"),
+    (r"\btermination\b",      "ending"),
+    (r"\bforthwith\b",        "immediately"),
+    (r"\bsole discretion\b",  "their own choice"),
+]
 
-_explanation_cache: dict[str, str] = {}
-
-SIMPLIFIER_SYSTEM_PROMPT = (
-    "You are a legal literacy assistant helping small business owners in India understand "
-    "loan agreement clauses. Explain clearly in 2-3 simple sentences what the following "
-    "clause means for the borrower, and why it may be harmful. Use simple English. "
-    "Do not use legal jargon. Be direct and specific about the risk."
-)
-
-
-def _hash_clause(text: str) -> str:
-    return hashlib.md5(text.encode()).hexdigest()
-
-
-def _template_explanation(primary_category: Optional[str]) -> str:
-    if primary_category and primary_category in TEMPLATE_EXPLANATIONS:
-        return TEMPLATE_EXPLANATIONS[primary_category]
-    return (
-        "This clause may contain terms that are unfavourable to you as the borrower. "
-        "It is advisable to consult a legal professional before signing this agreement. "
-        "The specific risks depend on the exact language used."
-    )
-
-
-async def _explain_via_ollama(text: str) -> Optional[str]:
-    """Call Ollama API asynchronously with timeout."""
-    payload = {
-        "model": OLLAMA_MODEL,
-        "prompt": f"{SIMPLIFIER_SYSTEM_PROMPT}\n\nClause:\n{text[:800]}",
-        "stream": False,
-        "options": {"temperature": 0.3, "num_predict": 150},
-    }
-    try:
-        async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
-            response = await client.post(
-                f"{OLLAMA_BASE_URL}/api/generate",
-                json=payload,
-            )
-            if response.status_code == 200:
-                data = response.json()
-                return data.get("response", "").strip()
-    except (httpx.TimeoutException, httpx.ConnectError):
-        log.info("Ollama not available or timed out, using template")
-    except Exception as e:
-        log.warning("Ollama call failed", error=str(e))
-    return None
+MAX_SIMPLIFIED_LEN = 400
 
 
-async def simplify_clause(
-    text: str,
-    primary_category: Optional[str] = None,
-) -> str:
-    """
-    Generate a plain-language explanation for a clause.
-    Priority: cache → Ollama → template.
-    """
-    cache_key = _hash_clause(text)
-    if cache_key in _explanation_cache:
-        return _explanation_cache[cache_key]
+def simplify_clause(text: str) -> str:
+    """Return a plain-English version of `text` (best-effort, length-capped)."""
+    if not text:
+        return text
 
-    explanation = None
+    simplified = text
+    for pattern, replacement in SUBSTITUTIONS:
+        simplified = re.sub(pattern, replacement, simplified, flags=re.IGNORECASE)
 
-    if USE_OLLAMA:
-        explanation = await _explain_via_ollama(text)
+    simplified = re.sub(r"\s+", " ", simplified).strip()
 
-    if not explanation:
-        explanation = _template_explanation(primary_category)
-
-    _explanation_cache[cache_key] = explanation
-    return explanation
-
-
-async def simplify_clauses_batch(
-    flagged_clauses: list[dict],
-) -> list[dict]:
-    """Run simplification for all flagged clauses concurrently."""
-    async def process_one(clause_data: dict) -> dict:
-        classification = clause_data.get("classification", {})
-        if not classification.get("is_predatory"):
-            return clause_data
-        text = clause_data.get("clause", {}).get("text", "")
-        categories = classification.get("categories", [])
-        primary_cat = categories[0]["name"] if categories else None
-        clause_data["plain_explanation"] = await simplify_clause(text, primary_cat)
-        return clause_data
-
-    tasks = [process_one(c) for c in flagged_clauses]
-    return list(await asyncio.gather(*tasks))
+    if len(simplified) > MAX_SIMPLIFIED_LEN:
+        simplified = simplified[: MAX_SIMPLIFIED_LEN - 3] + "..."
+    return simplified

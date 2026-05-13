@@ -1,104 +1,76 @@
+"""
+Rule-based validation against RBI fair-practice norms (data/rbi_rules.json).
+
+Rules schema (per entry):
+{
+  "id":          "RBI-INT-001",
+  "name":        "Unilateral interest rate change",
+  "keywords":    ["sole discretion", "unilaterally"],
+  "severity":    "HIGH" | "MEDIUM" | "LOW",
+  "applies_to":  ["Interest Clause"]   # empty list = applies to any label
+  "description": "..."
+}
+"""
 import json
-import re
-from pathlib import Path
-from typing import Optional
+import os
+from typing import Dict, List, Optional
 
-import structlog
+RULES_PATH = os.path.join("data", "rbi_rules.json")
 
-from config import RBI_RULES_FILE
-
-log = structlog.get_logger()
+_rules_cache: Optional[Dict] = None
 
 
-class ValidationError(Exception):
-    pass
-
-
-_RULES_CACHE: Optional[list[dict]] = None
-
-
-def _load_rules() -> list[dict]:
-    global _RULES_CACHE
-    if _RULES_CACHE is not None:
-        return _RULES_CACHE
+def _load_rules() -> Dict:
+    global _rules_cache
+    if _rules_cache is not None:
+        return _rules_cache
     try:
-        with open(RBI_RULES_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        _RULES_CACHE = data.get("rules", [])
-        log.info("RBI rules loaded", count=len(_RULES_CACHE))
-        return _RULES_CACHE
-    except Exception as e:
-        log.error("Failed to load RBI rules", error=str(e))
-        return []
+        with open(RULES_PATH, "r", encoding="utf-8") as f:
+            _rules_cache = json.load(f)
+    except Exception as exc:  # pragma: no cover
+        print(f"[validator] Could not load RBI rules: {exc}")
+        _rules_cache = {"rules": []}
+    return _rules_cache
 
 
-def _text_matches_keywords(text: str, keywords: list[str]) -> bool:
-    text_lower = text.lower()
-    for kw in keywords:
-        if kw.lower() in text_lower:
-            return True
-    return False
-
-
-def validate_clause(clause_text: str, categories: list[dict]) -> list[dict]:
+def validate_clause(clause: str, label: str) -> str:
     """
-    Cross-check a clause against RBI rules.
-    Only runs rules relevant to the detected categories.
-    Returns list of regulatory results.
+    Score the clause against the RBI rules and return one of LOW / MEDIUM / HIGH.
     """
-    rules = _load_rules()
-    if not rules:
-        return []
+    rules = _load_rules().get("rules", [])
+    text = (clause or "").lower()
 
-    detected_category_names = {c["name"] for c in categories}
-    results = []
+    severity_score = _baseline_for_label(label)
 
     for rule in rules:
-        rule_category = rule.get("category", "")
-        trigger_keywords = rule.get("trigger_keywords", [])
+        keywords: List[str] = rule.get("keywords", [])
+        severity: str = str(rule.get("severity", "LOW")).upper()
+        applies_to: List[str] = rule.get("applies_to", [])
 
-        # Match by category alignment
-        category_match = rule_category in detected_category_names
-
-        # Match by keyword presence in clause text
-        keyword_match = _text_matches_keywords(clause_text, trigger_keywords)
-
-        if not (category_match or keyword_match):
+        if applies_to and label not in applies_to:
             continue
 
-        # Determine verdict
-        verdict = rule.get("verdict_if_triggered", "POSSIBLE_VIOLATION")
-        # Downgrade to POSSIBLE_VIOLATION if only keyword-matched without category match
-        if keyword_match and not category_match:
-            verdict = "POSSIBLE_VIOLATION"
+        if any(kw.lower() in text for kw in keywords):
+            severity_score += _severity_weight(severity)
 
-        results.append({
-            "rule_id": rule["id"],
-            "rule_description": rule["description"],
-            "verdict": verdict,
-            "source": rule.get("source", ""),
-            "plain_rule": rule.get("plain_rule", ""),
-        })
-
-    # Sort: VIOLATION first, then POSSIBLE_VIOLATION
-    verdict_order = {"VIOLATION": 0, "POSSIBLE_VIOLATION": 1, "COMPLIANT": 2}
-    results.sort(key=lambda r: verdict_order.get(r["verdict"], 3))
-    return results
+    if severity_score >= 5:
+        return "HIGH"
+    if severity_score >= 2:
+        return "MEDIUM"
+    return "LOW"
 
 
-async def validate_clauses_parallel(analyzed_clauses: list[dict]) -> list[dict]:
-    """Validate all flagged clauses in parallel using asyncio.gather."""
-    import asyncio
+def _severity_weight(sev: str) -> int:
+    return {"HIGH": 4, "MEDIUM": 2, "LOW": 1}.get(sev, 0)
 
-    async def validate_one(clause_data: dict) -> dict:
-        classification = clause_data.get("classification", {})
-        if not classification.get("is_predatory"):
-            clause_data["regulatory_results"] = []
-            return clause_data
-        categories = classification.get("categories", [])
-        text = clause_data.get("clause", {}).get("text", "")
-        clause_data["regulatory_results"] = validate_clause(text, categories)
-        return clause_data
 
-    tasks = [validate_one(c) for c in analyzed_clauses]
-    return list(await asyncio.gather(*tasks))
+def _baseline_for_label(label: str) -> int:
+    """Categories already known to be risky start with a small baseline score."""
+    return {
+        "Penalty Clause": 2,
+        "Interest Clause": 2,
+        "Liability Clause": 2,
+        "Termination Clause": 1,
+        "Arbitration Clause": 1,
+        "Other": 0,
+    }.get(label, 0)
