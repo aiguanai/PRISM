@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secrets
+.env
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Model weights are large — keep out of git
+models/weights/*
+!models/weights/.gitkeep
+
+# Uploaded user files
+uploads/*
+!uploads/.gitkeep
+
+# Test/cache
+.pytest_cache/

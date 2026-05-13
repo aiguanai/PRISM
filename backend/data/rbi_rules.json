@@ -1,206 +1,94 @@
 {
+  "version": "1.0",
+  "source": "RBI Fair Practices Code (sample rules — Person 2 will refine)",
   "rules": [
     {
-      "id": "RBI-MSME-001",
-      "category": "UNLAWFUL_PENALTY",
-      "description": "Prepayment penalty on floating rate MSME loans is prohibited",
-      "source": "RBI Master Direction – Interest Rate on Advances, 2016 (Updated 2022); RBI/2019-20/170",
-      "trigger_keywords": [
-        "prepayment penalty", "prepayment charge", "prepayment fee",
-        "foreclosure penalty", "foreclosure charge", "foreclosure fee",
-        "early closure charge", "early repayment penalty", "pre-closure fee"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "RBI explicitly prohibits lenders from charging any prepayment penalty on MSME loans carrying floating interest rates. Any such charge is a direct violation and is unenforceable."
+      "id": "RBI-INT-001",
+      "name": "Unilateral interest rate change",
+      "keywords": ["sole discretion", "unilaterally", "at our discretion", "may change the interest", "may revise the interest"],
+      "severity": "HIGH",
+      "applies_to": ["Interest Clause"],
+      "description": "Lender reserving a unilateral right to change the interest rate is a fair-practice red flag."
     },
     {
-      "id": "RBI-MSME-002",
-      "category": "UNLAWFUL_PENALTY",
-      "description": "Penal charges must not be compounded; they cannot be added to principal for further interest levy",
-      "source": "RBI Circular on Penal Charges in Loan Accounts – RBI/2023-24/53, August 18, 2023",
-      "trigger_keywords": [
-        "compound penal", "compounded penalty", "penalty on penalty",
-        "penal interest compounded", "compounded penal interest",
-        "compound interest on default", "compounding on overdue"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "RBI's August 2023 circular mandates that penal charges be levied as a flat fee and must not be compounded or capitalised into the principal. Compounding penalties on top of penalties is explicitly prohibited."
+      "id": "RBI-INT-002",
+      "name": "Excessive compounding",
+      "keywords": ["compounded daily", "compounded monthly", "compound interest"],
+      "severity": "MEDIUM",
+      "applies_to": ["Interest Clause"],
+      "description": "Frequent compounding may inflate the effective rate well above the headline rate."
     },
     {
-      "id": "RBI-MSME-003",
-      "category": "UNLAWFUL_PENALTY",
-      "description": "Penal interest rate for default should not be excessive; any rate beyond 2% per month over the contracted rate is considered disproportionate",
-      "source": "RBI Circular on Penal Charges in Loan Accounts – RBI/2023-24/53; RBI Fair Practices Code",
-      "trigger_keywords": [
-        "penal interest", "default interest", "late payment charge",
-        "penalty for default", "default rate of interest", "overdue interest",
-        "delinquency charge", "penal rate"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "RBI requires penal charges to be reasonable and proportionate. A penal interest rate exceeding 24% per annum (2% per month) compounded on the contracted rate is typically flagged as excessive and may be challenged."
+      "id": "RBI-INT-003",
+      "name": "Very high headline rate",
+      "keywords": ["24%", "30%", "36%", "48%"],
+      "severity": "MEDIUM",
+      "applies_to": ["Interest Clause"],
+      "description": "Headline interest rates above usual limits warrant scrutiny."
     },
     {
-      "id": "RBI-MSME-004",
-      "category": "HIDDEN_FEE",
-      "description": "All charges and fees must be disclosed upfront in a Key Facts Statement (KFS) before loan sanction",
-      "source": "RBI Circular on Key Facts Statement for Loans and Advances – RBI/2023-24/75, April 15, 2024",
-      "trigger_keywords": [
-        "charges as applicable", "additional charges", "fees as determined",
-        "charges may vary", "subject to bank’s discretion", "as amended from time to time",
-        "as the bank may determine", "charges without prior notice", "fees at lender discretion"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "Effective April 2024, RBI mandates all lenders to provide a Key Facts Statement (KFS) disclosing every charge, fee, and cost before disbursement. Vague references to future or discretionary charges are a direct violation of this circular."
+      "id": "RBI-PEN-001",
+      "name": "Penal / default interest",
+      "keywords": ["liquidated damages", "penal interest", "additional interest", "default interest"],
+      "severity": "HIGH",
+      "applies_to": ["Penalty Clause"],
+      "description": "Penalty charges that may exceed RBI fair-practice norms."
     },
     {
-      "id": "RBI-MSME-005",
-      "category": "HIDDEN_FEE",
-      "description": "Processing fee for MSME loans must be disclosed upfront, non-refundable portion must be stated, and total cost must appear in KFS",
-      "source": "RBI Fair Practices Code for Lenders; RBI/2023-24/75 (KFS Mandate)",
-      "trigger_keywords": [
-        "processing fee", "processing charge", "application fee",
-        "loan processing fee", "documentation fee", "upfront fee"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Processing fees must be disclosed before loan sanction as part of the Key Facts Statement. Any undisclosed processing fee, or one that is changed after application, violates RBI fair practices."
+      "id": "RBI-PEN-002",
+      "name": "Late payment charges",
+      "keywords": ["late payment", "late fee", "overdue charges"],
+      "severity": "MEDIUM",
+      "applies_to": ["Penalty Clause"],
+      "description": "Late charges require clear, up-front disclosure."
     },
     {
-      "id": "RBI-MSME-006",
-      "category": "HIDDEN_FEE",
-      "description": "Insurance products cannot be bundled mandatorily with loans; premiums must be disclosed and borrower must have choice of insurer",
-      "source": "RBI Circular on Bundling of Financial Products – RBI/2012-13/202; IRDAI Guidelines",
-      "trigger_keywords": [
-        "insurance premium", "forced insurance", "insurance as per bank",
-        "insurance at lender’s discretion", "credit life insurance", "group insurance mandatory"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Banks cannot force borrowers to purchase insurance as a condition for the loan or bundle it without disclosure. If insurance is required, the borrower must be free to choose the insurer and the exact premium must be stated upfront."
+      "id": "RBI-TERM-001",
+      "name": "Termination without notice",
+      "keywords": ["without notice", "immediately terminate", "forthwith", "recall the entire loan"],
+      "severity": "HIGH",
+      "applies_to": ["Termination Clause"],
+      "description": "Termination without reasonable notice violates fair-practice expectations."
     },
     {
-      "id": "RBI-MSME-007",
-      "category": "UNILATERAL_RATE_CHANGE",
-      "description": "All new floating rate loans to MSMEs must be linked to an External Benchmark Rate (repo rate or T-bill) and reset at least every 3 months",
-      "source": "RBI Circular on External Benchmark Based Lending Rate – RBI/2019-20/142, September 4, 2019",
-      "trigger_keywords": [
-        "internal benchmark", "BPLR", "base rate linked", "bank’s internal rate",
-        "as determined by the bank", "bank may change rate", "at bank’s discretion"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "Since October 1, 2019, RBI requires all new floating rate loans to MSMEs to be linked to an external benchmark such as the RBI Repo Rate. Loans pegged only to an internal benchmark are non-compliant with this mandatory directive."
+      "id": "RBI-ARB-001",
+      "name": "One-sided arbitration",
+      "keywords": ["sole arbitrator", "appointed by the lender", "appointed by the company", "appointed by the bank"],
+      "severity": "HIGH",
+      "applies_to": ["Arbitration Clause"],
+      "description": "Arbitrator chosen unilaterally by the lender is structurally biased."
     },
     {
-      "id": "RBI-MSME-008",
-      "category": "UNILATERAL_RATE_CHANGE",
-      "description": "Any change in the interest rate must be communicated to the borrower with adequate prior notice; unilateral silent changes are prohibited",
-      "source": "RBI Fair Practices Code for Lenders, 2003 (Updated 2012); Consumer Protection Act 2019",
-      "trigger_keywords": [
-        "without notice", "without prior intimation", "at sole discretion",
-        "unilaterally revise", "without borrower consent", "without prior consent",
-        "bank may unilaterally", "lender may at any time change"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "RBI's Fair Practices Code requires banks to inform borrowers of any interest rate changes in advance before they take effect. A clause allowing silent, unilateral rate revisions without notice is a violation of borrower rights."
+      "id": "RBI-ARB-002",
+      "name": "Restrictive jurisdiction",
+      "keywords": ["exclusive jurisdiction"],
+      "severity": "MEDIUM",
+      "applies_to": ["Arbitration Clause"],
+      "description": "Restrictive jurisdiction clauses limit a borrower's redress options."
     },
     {
-      "id": "RBI-MSME-009",
-      "category": "COLLATERAL_OVERREACH",
-      "description": "MSME loans up to Rs. 2 crore are eligible for collateral-free lending under CGTMSE; demanding collateral for such loans may be non-compliant",
-      "source": "Credit Guarantee Fund Trust for Micro and Small Enterprises (CGTMSE) Master Circular 2023",
-      "trigger_keywords": [
-        "collateral security", "immovable property", "personal guarantee required",
-        "third-party guarantee", "mortgage of property", "security deposit mandatory"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Under the CGTMSE scheme, loans to micro and small enterprises up to ₹2 crore should be extended without collateral or third-party guarantees. Demanding collateral for covered loans without justification may violate scheme norms."
+      "id": "RBI-LIA-001",
+      "name": "Broad indemnity",
+      "keywords": ["indemnify and hold harmless", "any and all losses", "unlimited liability"],
+      "severity": "HIGH",
+      "applies_to": ["Liability Clause"],
+      "description": "Customer bears indemnity disproportionate to actual risk."
     },
     {
-      "id": "RBI-MSME-010",
-      "category": "COLLATERAL_OVERREACH",
-      "description": "Lenders cannot exercise right of set-off over borrower deposits without providing prior notice; silent set-off is prohibited",
-      "source": "RBI Fair Practices Code; Banking Ombudsman Scheme 2022 – Ground (b)(xiv)",
-      "trigger_keywords": [
-        "right of set-off", "set off", "lien over deposits", "appropriate without notice",
-        "debit without notice", "banker’s lien", "general lien over all accounts"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "Banks must provide prior notice before invoking right of set-off against a borrower's deposits. Exercising lien without notice is a violation of fair practices and is an explicit ground for Banking Ombudsman complaints under the 2022 scheme."
+      "id": "RBI-LIA-002",
+      "name": "Disclaimer of liability",
+      "keywords": ["not liable", "no liability", "disclaim all liability"],
+      "severity": "MEDIUM",
+      "applies_to": ["Liability Clause"],
+      "description": "Lender disclaims liability that should be borne by them."
     },
     {
-      "id": "RBI-MSME-011",
-      "category": "COLLATERAL_OVERREACH",
-      "description": "Blanket lien or charge over all assets of the borrower (beyond agreed collateral) constitutes collateral overreach",
-      "source": "RBI Guidelines on Fair Practices Code; SARFAESI Act 2002",
-      "trigger_keywords": [
-        "all assets of the borrower", "blanket lien", "all movable and immovable",
-        "entire business assets", "cross-collateralization", "pari passu charge over all",
-        "charge over entire property", "all present and future assets"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Collateral must be restricted to assets specifically agreed upon in the sanction letter. A blanket charge over all present and future assets of the borrower goes beyond the agreed security and constitutes overreach."
-    },
-    {
-      "id": "RBI-MSME-012",
-      "category": "ARBITRATION_WAIVER",
-      "description": "Borrowers cannot be contractually forced to waive their right to approach the Banking Ombudsman, consumer courts, or civil courts",
-      "source": "Banking Ombudsman Scheme 2022; Consumer Protection Act 2019; RBI Fair Practices Code",
-      "trigger_keywords": [
-        "waive right to court", "no right to legal action", "cannot approach court",
-        "waiver of legal rights", "no right to sue", "waiver of litigation rights",
-        "irrevocably waive", "borrower waives all rights"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "Borrowers have an inalienable statutory right to approach the Banking Ombudsman, consumer courts, and civil courts in India. Any contractual waiver of these rights is legally void and unenforceable."
-    },
-    {
-      "id": "RBI-MSME-013",
-      "category": "ARBITRATION_WAIVER",
-      "description": "Arbitration clauses must allow for mutual appointment of the arbitrator; bank-only appointment creates bias and may be invalid",
-      "source": "Arbitration and Conciliation Act 1996 (Amended 2019) – Section 11; RBI Guidelines",
-      "trigger_keywords": [
-        "bank shall appoint arbitrator", "arbitrator selected by lender",
-        "sole arbitrator appointed by bank", "arbitration at lender’s discretion",
-        "arbitrator shall be nominated by", "bank’s nominee as arbitrator"
-      ],
-      "verdict_if_triggered": "VIOLATION",
-      "plain_rule": "Under the Arbitration and Conciliation Act 1996 (as amended), the arbitrator must be mutually agreed upon. Clauses giving the bank sole right to appoint the arbitrator create an inherently biased process and have been struck down by Indian courts."
-    },
-    {
-      "id": "RBI-MSME-014",
-      "category": "BALLOON_PAYMENT",
-      "description": "Repayment structure with a large lump-sum (balloon) payment at maturity must be clearly disclosed and justified by borrower cash flows",
-      "source": "RBI Master Direction on Priority Sector Lending 2020; RBI Fair Practices Code",
-      "trigger_keywords": [
-        "bullet repayment", "full repayment at maturity", "lump sum at end",
-        "entire principal at end", "single bullet payment", "balloon payment",
-        "non-amortizing", "interest-only installments", "principal due at expiry"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Balloon payment structures must be explicitly disclosed in the Key Facts Statement and must be justified by the borrower's cash flow profile. Undisclosed or inappropriate balloon structures can trap borrowers in unmanageable debt at maturity."
-    },
-    {
-      "id": "RBI-MSME-015",
-      "category": "UNLAWFUL_PENALTY",
-      "description": "Acceleration of the entire loan outstanding for minor or first-time defaults without adequate notice period is an unfair practice",
-      "source": "RBI Fair Practices Code for Lenders, 2003; Indian Contract Act 1872 Section 74",
-      "trigger_keywords": [
-        "immediately due and payable", "entire outstanding immediately",
-        "demand entire loan", "whole of outstanding balance due",
-        "acceleration clause", "entire dues become payable on default"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "Declaring the entire loan immediately repayable upon a minor or first default without a notice and cure period is considered an unfair and disproportionate practice under RBI's Fair Practices Code."
-    },
-    {
-      "id": "RBI-MSME-016",
-      "category": "UNILATERAL_RATE_CHANGE",
-      "description": "Lenders must provide at least 3 months’ notice before increasing margin or spread on MSME loans; rate reset period for EBLR-linked loans is 3 months",
-      "source": "RBI/2019-20/142 on EBLR; RBI Fair Practices Code – Para 3(b)",
-      "trigger_keywords": [
-        "spread may be revised", "margin may be changed", "risk premium may vary",
-        "lender may revise spread", "bank may increase margin", "credit risk premium changed"
-      ],
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "plain_rule": "For EBLR-linked loans, the spread (margin above the benchmark) can only be revised upward due to a material change in credit risk and must be reset at intervals not less than 3 months. Arbitrary revision of spreads is prohibited."
+      "id": "RBI-GEN-001",
+      "name": "Waiver of consumer rights",
+      "keywords": ["waive any right", "waive all rights", "no recourse"],
+      "severity": "HIGH",
+      "applies_to": [],
+      "description": "General waiver of consumer rights — against RBI fair-practice code."
     }
   ]
 }
