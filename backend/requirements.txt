@@ -1,12 +1,25 @@
+# ── Web framework ─────────────────────────────────────────────────────────────
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 python-multipart==0.0.9
-pdfplumber==0.11.4
-python-docx==1.1.2
 pydantic==2.9.2
-requests==2.32.3
 
-# Optional ML dependencies (only required for ML classifier mode).
-# Uncomment to install:
+# ── Stage 1: Document ingestion ───────────────────────────────────────────────
+pdfplumber==0.11.4          # native PDF text extraction (primary)
+PyMuPDF==1.24.9             # PyMuPDF fallback for complex PDFs
+python-docx==1.1.2          # DOCX extraction
+Pillow==10.4.0              # image processing
+pytesseract==0.3.13         # OCR engine wrapper
+opencv-python-headless==4.10.0.84  # image preprocessing for OCR
+
+# ── Stage 4: Regulatory validation ───────────────────────────────────────────
+requests==2.32.3
+openai>=1.30.0              # GPT-powered semantic validation + simplification
+
+# ── Stage 6: Report generation ────────────────────────────────────────────────
+reportlab==4.2.2            # PDF report generation (pure Python, no system deps)
+
+# ── Optional ML dependencies (Stage 3 classifier) ────────────────────────────
+# Uncomment to use trained model weights:
 # torch==2.4.1
 # transformers==4.45.1
