@@ -24,7 +24,7 @@ Upload a PDF, DOCX, or image of any loan agreement. PRISM segments every clause,
 ## 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/aiguanai/PRISM.git
 cd PRISM
 ```
 
