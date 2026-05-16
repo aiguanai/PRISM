@@ -4,6 +4,8 @@ An AI platform that detects predatory and RBI non-compliant clauses in MSME loan
 
 Upload a PDF, DOCX, or image of any loan agreement. PRISM segments every clause, classifies it into one of 7 predatory risk categories using a fine-tuned Legal-BERT model, cross-checks against 163 RBI rules, and generates a risk report.
 
+Contributors : @Shubhaditya14 @sneha11patel2004 @Varun-N777
+
 ---
 
 ## Prerequisites
