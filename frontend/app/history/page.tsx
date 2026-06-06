@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
@@ -221,7 +221,7 @@ function ClauseBar({ breakdown }: { breakdown: HistoryDocument['clauseBreakdown'
   );
 }
 
-﻿function DetailPanel({ doc, onClose }: { doc: HistoryDocument; onClose: () => void }) {
+function DetailPanel({ doc, onClose }: { doc: HistoryDocument; onClose: () => void }) {
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
   const overcharge = doc.totalRepayable - doc.loanAmount;
   const d = doc.demographics;
@@ -395,6 +395,7 @@ export default function HistoryPage() {
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState<string | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [reloadKey, setReloadKey]   = useState(0);
 
   // Debounced search fetch
   useEffect(() => {
@@ -410,7 +411,7 @@ export default function HistoryPage() {
         .finally(() => setLoading(false));
     }, 300);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, reloadKey]);
 
   // Open detail panel — fetch full analysis on demand
   const handleSelectDoc = async (doc: HistoryDocument) => {
@@ -545,7 +546,7 @@ export default function HistoryPage() {
                 <p className="text-xs text-[#6b7280]">{error}</p>
                 <motion.button
                   className="mt-4 text-xs text-[#004225] hover:text-[#2d6a4f] underline"
-                  onClick={() => setSearch(s => s)} // re-trigger effect
+                  onClick={() => setReloadKey(k => k + 1)} // re-trigger effect
                   whileHover={{ scale: 1.05 }}
                 >
                   Retry

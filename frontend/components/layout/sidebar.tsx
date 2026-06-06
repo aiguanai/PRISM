@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, History, Settings, Home, X, Clock, Shield } from 'lucide-react';
+import { FileText, History, Home, X, Clock, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -11,7 +11,6 @@ const navItems = [
   { id: 'home',     label: 'Dashboard',    href: '/',         icon: <Home     className="w-4 h-4" /> },
   { id: 'new',      label: 'New Analysis', href: '/new',      icon: <FileText className="w-4 h-4" /> },
   { id: 'history',  label: 'History',      href: '/history',  icon: <History  className="w-4 h-4" /> },
-  { id: 'settings', label: 'Settings',     href: '/settings', icon: <Settings className="w-4 h-4" /> },
 ];
 
 const recentDocs = [
@@ -170,18 +169,17 @@ export function Sidebar({ isOpen = false, onClose, className = '' }: SidebarProp
         )}
       </AnimatePresence>
 
-      <motion.aside
-        className={`fixed lg:sticky top-16 lg:top-0 left-0 h-[calc(100vh-4rem)] lg:h-screen w-60 overflow-y-auto z-40 lg:z-auto ${className}`}
+      <aside
+        className={`fixed lg:sticky top-16 lg:top-0 left-0 h-[calc(100vh-4rem)] lg:h-screen w-60 overflow-y-auto z-40 lg:z-auto transition-transform duration-300 ease-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 ${className}`}
         style={{
           background: '#004225',
           borderRight: '1px solid rgba(201,168,76,0.2)',
-          x: isOpen ? 0 : -240,
-        } as React.CSSProperties}
-        animate={{ x: isOpen ? 0 : 0 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        }}
       >
         <SidebarContent />
-      </motion.aside>
+      </aside>
     </>
   );
 }

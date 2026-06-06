@@ -9,7 +9,7 @@ import { LiveDocumentScanner } from '@/components/processing/live-document-scann
 import { ResultsDashboard } from '@/components/results/results-dashboard';
 import { uploadDocument, startAnalysis, getJobStatus, getAnalysisResult } from '@/lib/api';
 import type { DocumentAnalysis } from '@/lib/types';
-import { Shield, Zap, Brain, ArrowRight, FileSearch, TrendingUp, AlertTriangle, Percent, Lock, FileWarning } from 'lucide-react';
+import { Brain, ArrowRight, TrendingUp, AlertTriangle, Percent, Lock, FileWarning } from 'lucide-react';
 
 type ViewState = 'upload' | 'processing' | 'results';
 
@@ -51,17 +51,6 @@ const features = [
     bg: '#fdfaf4', border: 'rgba(201,168,76,0.3)', iconColor: '#8a6a1a', iconBg: 'rgba(201,168,76,0.1)',
   },
 ];
-
-/* Deterministic pseudo-random using a seeded LCG — same output on server and client */
-function seededRandom(seed: number) {
-  let s = seed;
-  return () => {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
-  };
-}
-
-
 
 /* Animated word reveal for headline */
 function AnimatedHeadline() {
@@ -224,6 +213,7 @@ export default function Home() {
                   </div>
                   <button
                     onClick={() => setAnalysisError(null)}
+                    aria-label="Dismiss error"
                     className="text-[#6b7280] hover:text-[#1a1f2e] text-lg flex-shrink-0"
                   >×</button>
                 </motion.div>
@@ -297,7 +287,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <UploadArea onFileSelect={handleFileSelect} onAnalyze={handleFileSelect} />              </motion.div>
+                <UploadArea onFileSelect={() => {}} onAnalyze={handleFileSelect} />              </motion.div>
 
               {/* Feature grid */}
               <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>

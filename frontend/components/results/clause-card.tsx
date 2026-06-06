@@ -183,29 +183,6 @@ export function ClauseCard({
                 </ul>
               </motion.div>
             )}
-
-            {/* Action buttons */}
-            <motion.div
-              className="flex items-center gap-2 pt-3 border-t border-current/20"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.button
-                className={`flex-1 px-4 py-2.5 rounded font-semibold text-sm transition-all ${colors.bg} ${colors.text} border ${colors.border}`}
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                ⚠️ Flag for Negotiation
-              </motion.button>
-              <motion.button
-                className={`px-4 py-2.5 rounded font-semibold text-sm transition-all ${colors.bg} ${colors.text} border ${colors.border}`}
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                📝 Note
-              </motion.button>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

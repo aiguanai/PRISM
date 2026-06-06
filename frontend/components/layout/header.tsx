@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Menu, Plus, Bell } from 'lucide-react';
+import { Menu, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { PrismLogo } from './prism-logo';
 
@@ -96,19 +96,6 @@ export function Header({ onMenuClick, showMenu = true }: HeaderProps) {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <motion.button
-            className="relative p-2 rounded-lg transition-colors"
-            style={{ color: 'rgba(232,240,235,0.6)' }}
-            whileHover={{ color: '#f4f1ea', scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Bell className="w-4 h-4" />
-            <span
-              className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full"
-              style={{ background: '#c9a84c' }}
-            />
-          </motion.button>
-
           <Link href="/new">
             <motion.div
               className="flex items-center gap-1.5 px-4 py-2 rounded cursor-pointer"

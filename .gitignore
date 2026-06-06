@@ -92,3 +92,20 @@ notinuse/
 
 # ── Byte-compiled backups ─────────────────────────────────────────────────────
 backend/data/rbi_rules.json.backup_35rules
+
+# ── Research paper (not part of the application) ─────────────────────────────
+paper/
+# LaTeX build artifacts (in case .tex is kept elsewhere)
+*.aux
+*.lof
+*.lot
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb

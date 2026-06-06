@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, File, X, Sparkles, CheckCircle2, FileText, Shield, Zap } from 'lucide-react';
+import { File, X, Sparkles, CheckCircle2, FileText } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 interface UploadedFile {
@@ -71,6 +71,10 @@ export function UploadArea({ onFileSelect, onAnalyze }: UploadAreaProps) {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload a loan agreement — click or press Enter to browse files"
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         animate={{ scale: isDragging ? 1.015 : 1 }}
@@ -257,6 +261,7 @@ export function UploadArea({ onFileSelect, onAnalyze }: UploadAreaProps) {
 
                 <motion.button
                   onClick={(e) => { e.stopPropagation(); removeFile(file.id); }}
+                  aria-label={`Remove ${file.name}`}
                   className="relative flex-shrink-0 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-all"
                   whileHover={{ scale: 1.15, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}

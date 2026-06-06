@@ -1,6 +1,6 @@
 {
-  "version": "3.1",
-  "source": "Person 2 — 128 MSME rules; v3.1 (June 2026): mojibake fix, 2024–2026 citation updates (KFS Apr-2024, Co-Lending Directions 2025, ₹20L collateral-free 2026), +7 new rules",
+  "version": "3.0",
+  "source": "Person 2 — expanded with 128 MSME-specific rules",
   "rules": [
     {
       "id": "RBI-DL-001",
@@ -55,7 +55,7 @@
     {
       "id": "RBI-DL-004",
       "category": "kfs_missing",
-      "source": "RBI Guidelines on Digital Lending, 2022 (Annex I - KFS) | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Guidelines on Digital Lending, 2022 (Annex I - KFS)",
       "severity": "HIGH",
       "pattern_keywords": [
         "key fact statement not applicable",
@@ -70,7 +70,7 @@
     {
       "id": "RBI-DL-005",
       "category": "apr_disclosure",
-      "source": "RBI Guidelines on Digital Lending, 2022 (Annex I - KFS) | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Guidelines on Digital Lending, 2022 (Annex I - KFS)",
       "severity": "HIGH",
       "pattern_keywords": [
         "flat rate",
@@ -286,7 +286,7 @@
     {
       "id": "RBI-DL-018",
       "category": "hidden_charges",
-      "source": "RBI Digital Lending Guidelines 2022 (Annex I - KFS) | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Digital Lending Guidelines 2022 (Annex I - KFS)",
       "severity": "HIGH",
       "pattern_keywords": [
         "additional charges as applicable",
@@ -458,7 +458,7 @@
     {
       "id": "RBI-CLM-001",
       "category": "co_lending_disclosure",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "HIGH",
       "pattern_keywords": [
         "co-lending arrangement need not be disclosed",
@@ -476,7 +476,7 @@
     {
       "id": "RBI-CLM-002",
       "category": "co_lending_repayment",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "HIGH",
       "pattern_keywords": [
         "repay to each lender separately",
@@ -491,7 +491,7 @@
     {
       "id": "RBI-CLM-003",
       "category": "blended_rate_disclosure",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020), Para 2.1",
+      "source": "RBI Co-Lending Model Circular 2020, Para 2.1",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "dual interest",
@@ -509,7 +509,7 @@
     {
       "id": "RBI-CLM-004",
       "category": "co_lender_change",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "co-lender may be changed",
@@ -524,7 +524,7 @@
     {
       "id": "RBI-CLM-005",
       "category": "co_lending_fees",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "HIGH",
       "pattern_keywords": [
         "co-lending fee",
@@ -539,7 +539,7 @@
     {
       "id": "RBI-CLM-006",
       "category": "co_lending_agreement",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "separate agreements",
@@ -554,7 +554,7 @@
     {
       "id": "RBI-CLM-007",
       "category": "co_lending_fund_flow",
-      "source": "RBI (Co-Lending Arrangements) Directions, 2025 (w.e.f. 1 Jan 2026; repeals Co-Lending Model 2020)",
+      "source": "RBI Co-Lending Model Circular, 2020",
       "severity": "HIGH",
       "pattern_keywords": [
         "disbursement via platform account",
@@ -569,7 +569,7 @@
     {
       "id": "RBI-MSME-001",
       "category": "collateral_free_entitlement",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "borrower shall create equitable mortgage",
@@ -591,7 +591,7 @@
     {
       "id": "RBI-MSME-002",
       "category": "collateral_free_entitlement",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "credit guarantee not available",
@@ -613,7 +613,7 @@
     {
       "id": "RBI-MSME-003",
       "category": "third_party_guarantee_coercion",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines",
       "severity": "HIGH",
       "pattern_keywords": [
         "personal guarantor mandatory",
@@ -635,7 +635,7 @@
     {
       "id": "RBI-MSME-004",
       "category": "interest_rate_disclosure",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI Digital Lending Guidelines, September 2, 2022",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI Digital Lending Guidelines, September 2, 2022",
       "severity": "HIGH",
       "pattern_keywords": [
         "interest rate as determined by lender",
@@ -657,7 +657,7 @@
     {
       "id": "RBI-MSME-005",
       "category": "interest_rate_disclosure",
-      "source": "RBI Digital Lending Guidelines, September 2, 2022, Annex - Key Fact Statement; Fair Practices Code, Para 3 | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Digital Lending Guidelines, September 2, 2022, Annex - Key Fact Statement; Fair Practices Code, Para 3",
       "severity": "HIGH",
       "pattern_keywords": [
         "fees may be charged from time to time",
@@ -679,7 +679,7 @@
     {
       "id": "RBI-MSME-006",
       "category": "prepayment_foreclosure",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI circulars applicable to floating rate individual/MSME foreclosure practices",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI circulars applicable to floating rate individual/MSME foreclosure practices",
       "severity": "HIGH",
       "pattern_keywords": [
         "foreclosure fee applicable",
@@ -701,7 +701,7 @@
     {
       "id": "RBI-MSME-007",
       "category": "prepayment_foreclosure",
-      "source": "RBI Digital Lending Guidelines, September 2, 2022, Key Fact Statement requirements | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Digital Lending Guidelines, September 2, 2022, Key Fact Statement requirements",
       "severity": "HIGH",
       "pattern_keywords": [
         "prepayment terms communicated later",
@@ -833,7 +833,7 @@
     {
       "id": "RBI-MSME-013",
       "category": "credit_bureau_reporting",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016; Credit Information Companies Act compliance norms",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016; Credit Information Companies Act compliance norms",
       "severity": "HIGH",
       "pattern_keywords": [
         "lender may report without notice",
@@ -965,7 +965,7 @@
     {
       "id": "RBI-MSME-019",
       "category": "security_evasion_negative_lien",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines",
       "severity": "HIGH",
       "pattern_keywords": [
         "borrower shall not encumber any assets",
@@ -987,7 +987,7 @@
     {
       "id": "RBI-MSME-020",
       "category": "security_evasion_fixed_deposit_lien",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024), Chapter IV, Para 4.1; CGTMSE Operational Guidelines",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "fixed deposit shall be marked lien",
@@ -1009,7 +1009,7 @@
     {
       "id": "RBI-MSME-021",
       "category": "security_evasion_cross_collateralization",
-      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024); CGTMSE Operational Guidelines | Collateral-free MSE limit raised to ₹20 lakh (extendable to ₹25 lakh on track record) w.e.f. 1 April 2026 — Lending to MSME (Amendment) Directions, 2026",
+      "source": "Reserve Bank of India [Lending to Micro, Small & Medium Enterprises (MSME) Sector] Directions, 2017 (Updated June 11, 2024); CGTMSE Operational Guidelines",
       "severity": "HIGH",
       "pattern_keywords": [
         "all existing securities shall secure this facility",
@@ -1031,7 +1031,7 @@
     {
       "id": "RBI-MSME-022",
       "category": "interest_rate_reset_without_notice",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "HIGH",
       "pattern_keywords": [
         "interest may be revised from time to time",
@@ -1053,7 +1053,7 @@
     {
       "id": "RBI-MSME-023",
       "category": "hidden_apr_components",
-      "source": "RBI Digital Lending Guidelines, September 2, 2022, Key Fact Statement | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Digital Lending Guidelines, September 2, 2022, Key Fact Statement",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "convenience charges as applicable",
@@ -1141,7 +1141,7 @@
     {
       "id": "RBI-MSME-027",
       "category": "digital_lending_auto_debit_without_consent",
-      "source": "RBI Guidelines on Digital Lending, September 2, 2022; Key Fact Statement requirements | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Guidelines on Digital Lending, September 2, 2022; Key Fact Statement requirements",
       "severity": "HIGH",
       "pattern_keywords": [
         "auto debit deemed accepted",
@@ -1163,7 +1163,7 @@
     {
       "id": "RBI-MSME-028",
       "category": "foreclosure_lock_in",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "HIGH",
       "pattern_keywords": [
         "minimum lock-in period",
@@ -1427,7 +1427,7 @@
     {
       "id": "RBI-MSME-040",
       "category": "recovery_and_repossession_without_notice",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, recovery provisions",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, recovery provisions",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "lender may seize assets without notice",
@@ -1449,7 +1449,7 @@
     {
       "id": "RBI-MSME-041",
       "category": "recovery_public_shaming",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy; RBI Digital Lending Guidelines, 2022",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy; RBI Digital Lending Guidelines, 2022",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "lender may disclose default publicly",
@@ -1471,7 +1471,7 @@
     {
       "id": "RBI-MSME-042",
       "category": "recovery_third_party_contact",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "lender may contact customers",
@@ -1515,7 +1515,7 @@
     {
       "id": "RBI-MSME-044",
       "category": "recovery_contact_time_abuse",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
       "severity": "HIGH",
       "pattern_keywords": [
         "contact at any time",
@@ -1889,7 +1889,7 @@
     {
       "id": "RBI-MSME-061",
       "category": "interest_computation_method_obfuscation",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI Digital Lending Guidelines, 2022, Key Fact Statement | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; RBI Digital Lending Guidelines, 2022, Key Fact Statement",
       "severity": "HIGH",
       "pattern_keywords": [
         "interest computed as per internal formula",
@@ -1911,7 +1911,7 @@
     {
       "id": "RBI-MSME-062",
       "category": "interest_day_count_manipulation",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "360 day basis",
@@ -1933,7 +1933,7 @@
     {
       "id": "RBI-MSME-063",
       "category": "interest_backdated_rate_revision",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "HIGH",
       "pattern_keywords": [
         "rate revision with retrospective effect",
@@ -1955,7 +1955,7 @@
     {
       "id": "RBI-MSME-064",
       "category": "processing_fee_non_refundable_pre_sanction",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "processing fee non refundable",
@@ -1977,7 +1977,7 @@
     {
       "id": "RBI-MSME-065",
       "category": "sanction_letter_external_terms_reference",
-      "source": "RBI Digital Lending Guidelines, 2022, Key Fact Statement; Fair Practices Code, Para 3 | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Digital Lending Guidelines, 2022, Key Fact Statement; Fair Practices Code, Para 3",
       "severity": "HIGH",
       "pattern_keywords": [
         "terms available on website",
@@ -2439,7 +2439,7 @@
     {
       "id": "RBI-MSME-086",
       "category": "recovery_workplace_contact",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "may visit place of business",
@@ -2461,7 +2461,7 @@
     {
       "id": "RBI-MSME-087",
       "category": "recovery_customer_notification",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Recovery Policy",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "customers may be informed",
@@ -2835,7 +2835,7 @@
     {
       "id": "RBI-MSME-104",
       "category": "interest_rounding_up_manipulation",
-      "source": "Master Direction - Non-Banking Financial Company – Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
+      "source": "Master Direction - Non-Banking Financial Company â€“ Fair Practices Code (Reserve Bank) Directions, 2016, Para 3",
       "severity": "MEDIUM",
       "pattern_keywords": [
         "fraction rounded upward",
@@ -2857,7 +2857,7 @@
     {
       "id": "RBI-MSME-105",
       "category": "emi_recomputation_without_notice",
-      "source": "Fair Practices Code, Para 3; RBI Digital Lending Guidelines, Key Fact Statement | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "Fair Practices Code, Para 3; RBI Digital Lending Guidelines, Key Fact Statement",
       "severity": "HIGH",
       "pattern_keywords": [
         "installments may be recomputed",
@@ -2879,7 +2879,7 @@
     {
       "id": "RBI-MSME-106",
       "category": "key_fact_statement_waiver",
-      "source": "RBI Guidelines on Digital Lending, September 2, 2022, Annex - Key Fact Statement | KFS mandatory for all retail & MSME term loans (digital or physical) per RBI/2024-25/18 dated 15 April 2024, w.e.f. 1 Oct 2024",
+      "source": "RBI Guidelines on Digital Lending, September 2, 2022, Annex - Key Fact Statement",
       "severity": "CRITICAL",
       "pattern_keywords": [
         "borrower waives key fact statement",
@@ -3380,152 +3380,6 @@
       "description": "Detects penal charges disguised as interest rate increases for delayed operational reporting.",
       "plain_rule": "Your lender cannot punish your business with higher interest just because paperwork was delayed.",
       "verdict_if_triggered": "VIOLATION",
-      "msme_specific": true
-    },
-    {
-      "id": "RBI-MSME-129",
-      "category": "property_document_release",
-      "source": "Responsible Lending Conduct – Release of Movable/Immovable Property Documents on Repayment/Settlement of Personal Loans, RBI/2023-24/60 dated 13 September 2023 (applicable to releases falling due on or after 1 December 2023)",
-      "severity": "HIGH",
-      "pattern_keywords": [
-        "documents shall be retained after closure",
-        "lender may retain title deeds",
-        "release of documents at lender discretion",
-        "no fixed timeline for return of documents",
-        "borrower waives right to timely document release",
-        "charge shall continue after repayment",
-        "documents returned subject to administrative convenience",
-        "return of original documents not guaranteed",
-        "lien shall subsist after full repayment",
-        "property papers released only on request"
-      ],
-      "description": "Detects clauses that retain original property/title documents or keep charges registered after full repayment, contrary to the 30-day release and ₹5,000/day compensation mandate.",
-      "plain_rule": "After you fully repay, the lender must return all original property documents and remove any charge within 30 days, or pay you ₹5,000 for each day of delay.",
-      "verdict_if_triggered": "VIOLATION",
-      "msme_specific": false
-    },
-    {
-      "id": "RBI-MSME-130",
-      "category": "prepayment_floating_rate_mse_prohibited",
-      "source": "Reserve Bank of India (Pre-payment Charges on Loans) Directions, 2025 (in force for loans sanctioned/renewed on or after 1 January 2026)",
-      "severity": "HIGH",
-      "pattern_keywords": [
-        "prepayment charge on floating rate",
-        "foreclosure charge on floating rate",
-        "pre-closure penalty on floating rate loan",
-        "minimum lock-in before prepayment",
-        "prepayment penalty irrespective of source of funds",
-        "foreclosure fee on business loan to enterprise",
-        "no part-prepayment permitted without charge",
-        "early closure charge on floating rate facility",
-        "lock-in period for foreclosure",
-        "prepayment charge on micro or small enterprise loan"
-      ],
-      "description": "Detects pre-payment or foreclosure charges and lock-in periods on floating-rate loans to micro & small enterprises, which are now prohibited regardless of source of funds or amount prepaid.",
-      "plain_rule": "On a floating-rate loan to your micro or small business, the lender cannot charge any foreclosure or prepayment fee and cannot impose a lock-in period.",
-      "verdict_if_triggered": "VIOLATION",
-      "msme_specific": true
-    },
-    {
-      "id": "RBI-MSME-131",
-      "category": "prepayment_charge_reinstatement",
-      "source": "Reserve Bank of India (Pre-payment Charges on Loans) Directions, 2025",
-      "severity": "HIGH",
-      "pattern_keywords": [
-        "waived charges may be reinstated on prepayment",
-        "previously waived fee recoverable at foreclosure",
-        "retrospective charges on prepayment",
-        "undisclosed charges payable at closure",
-        "prepayment charge even if lender initiated",
-        "charges on closure required by lender",
-        "foreclosure charge where recall by lender",
-        "reinstatement of waived prepayment fee"
-      ],
-      "description": "Detects reinstatement of previously waived/undisclosed charges at prepayment or charges levied when prepayment is lender-initiated, both prohibited under the 2025 Directions.",
-      "plain_rule": "A lender cannot revive waived charges at closure, add undisclosed charges, or charge you when it is the lender that calls in the loan.",
-      "verdict_if_triggered": "VIOLATION",
-      "msme_specific": true
-    },
-    {
-      "id": "RBI-MSME-132",
-      "category": "interest_charged_from_sanction_date",
-      "source": "Fair Practices Code for Lenders – Charging of Interest, RBI circular dated 29 April 2024",
-      "severity": "HIGH",
-      "pattern_keywords": [
-        "interest from date of sanction",
-        "interest from date of agreement",
-        "interest accrues from sanction",
-        "interest charged from cheque date",
-        "interest for the entire month",
-        "full month interest irrespective of disbursement date",
-        "interest before actual disbursement",
-        "advance instalment with interest on full amount",
-        "interest from execution of agreement",
-        "interest computed from approval date"
-      ],
-      "description": "Detects interest charged from the sanction/agreement/cheque date instead of actual disbursement, full-month interest for part-month periods, or advance EMIs while charging interest on the full amount.",
-      "plain_rule": "Interest must run only from the day money actually reaches you and only for the days the loan is outstanding — not from the sanction date or for a whole month.",
-      "verdict_if_triggered": "VIOLATION",
-      "msme_specific": false
-    },
-    {
-      "id": "RBI-MSME-133",
-      "category": "vernacular_language_comprehension",
-      "source": "Master Direction – NBFC Fair Practices Code (Reserve Bank) Directions, 2016, Para 3; KFS norms RBI/2024-25/18 dated 15 April 2024 (disclosure in a language understood by the borrower)",
-      "severity": "MEDIUM",
-      "pattern_keywords": [
-        "agreement only in english",
-        "english version shall prevail and is binding",
-        "borrower waives right to translation",
-        "no vernacular version provided",
-        "translation not the responsibility of lender",
-        "borrower deemed to understand english",
-        "language of agreement not negotiable",
-        "key fact statement in english only"
-      ],
-      "description": "Detects clauses denying the borrower loan terms or a Key Facts Statement in a language they understand, contrary to Fair Practices Code and KFS requirements.",
-      "plain_rule": "Your loan terms and Key Facts Statement must be given in a language you actually understand, not English-only by default.",
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "msme_specific": false
-    },
-    {
-      "id": "RBI-MSME-134",
-      "category": "ombudsman_escalation_suppression",
-      "source": "Reserve Bank – Integrated Ombudsman Scheme, 2021; Fair Practices Code grievance redressal provisions",
-      "severity": "MEDIUM",
-      "pattern_keywords": [
-        "no recourse to banking ombudsman",
-        "ombudsman scheme not applicable",
-        "borrower waives right to rbi ombudsman",
-        "disputes resolved only by arbitration",
-        "no escalation beyond lender grievance cell",
-        "rbi ombudsman expressly excluded",
-        "borrower shall not approach ombudsman",
-        "exclusive jurisdiction barring ombudsman"
-      ],
-      "description": "Detects clauses suppressing or waiving the borrower's right to escalate unresolved grievances to the RBI Integrated Ombudsman.",
-      "plain_rule": "After 30 days or an unsatisfactory reply, you have the right to take your complaint to the RBI Ombudsman — a lender cannot take that away.",
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
-      "msme_specific": false
-    },
-    {
-      "id": "RBI-MSME-135",
-      "category": "floating_rate_emi_reset_disclosure",
-      "source": "Reset of Floating Interest Rate on Equated Monthly Instalments (EMI) based Personal Loans, RBI circular dated 18 August 2023 (principles applied to floating-rate MSME loans)",
-      "severity": "MEDIUM",
-      "pattern_keywords": [
-        "tenor may be extended indefinitely on rate reset",
-        "emi reset without prior intimation",
-        "borrower has no option to switch to fixed rate",
-        "tenor elongation without consent",
-        "no option to prepay on rate revision",
-        "negative amortisation on rate increase",
-        "rate reset shall not entitle switch to fixed",
-        "unlimited extension of repayment period"
-      ],
-      "description": "Detects clauses that allow open-ended tenor elongation on interest-rate resets or deny the borrower the option to switch to a fixed rate or prepay when rates rise.",
-      "plain_rule": "When your floating rate rises, the lender must tell you, give you the option to switch to a fixed rate or prepay, and cannot stretch your tenor without limit.",
-      "verdict_if_triggered": "POSSIBLE_VIOLATION",
       "msme_specific": true
     }
   ]

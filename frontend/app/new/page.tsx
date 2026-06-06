@@ -19,6 +19,7 @@ export default function NewAnalysisPage() {
   const [message, setMessage]   = useState('Scanning document structure');
   const [eta, setEta]           = useState(45);
   const [analysis, setAnalysis] = useState<DocumentAnalysis | null>(null);
+  const [documentId, setDocumentId] = useState<string | null>(null);
   const [error, setError]       = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -40,6 +41,7 @@ export default function NewAnalysisPage() {
     try {
       // 1. Upload
       const uploadRes = await uploadDocument(file);
+      setDocumentId(uploadRes.documentId);
       setProgress(15);
       setPhase('extracting');
       setMessage('Extracting text and clauses…');
@@ -108,6 +110,7 @@ export default function NewAnalysisPage() {
     setProgress(0);
     setMessage('');
     setAnalysis(null);
+    setDocumentId(null);
     setError(null);
   };
 
@@ -179,7 +182,7 @@ export default function NewAnalysisPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <ResultsDashboard analysis={analysis} />
+              <ResultsDashboard analysis={analysis} documentId={documentId ?? undefined} />
               <motion.div
                 className="mt-8 flex justify-center"
                 initial={{ opacity: 0 }}
