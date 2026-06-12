@@ -28,7 +28,7 @@ For system design, the analysis pipeline, and full module breakdown, see
 ## 1. Clone the Repository
 
 ```bash
-git clone [<your-repo-url>](https://github.com/aiguanai/PRISM.git)
+git clone https://github.com/aiguanai/PRISM.git
 cd PRISM
 ```
 
