@@ -6,6 +6,7 @@ import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { UploadArea } from '@/components/upload/upload-area';
 import { ProcessingTimeline } from '@/components/processing/processing-timeline';
 import { ResultsDashboard } from '@/components/results/results-dashboard';
+import { AlertTriangle } from 'lucide-react';
 import { uploadDocument, startAnalysis, getJobStatus, getAnalysisResult } from '@/lib/api';
 import type { DocumentAnalysis } from '@/lib/types';
 
@@ -116,21 +117,7 @@ export default function NewAnalysisPage() {
 
   return (
     <DashboardLayout>
-      <main className="relative p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto min-h-screen">
-        {/* Background orbs */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full blur-3xl"
-            animate={{ x: [0, 50, -30, 0], y: [0, -40, 30, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-72 h-72 bg-gradient-to-l from-secondary/20 to-primary/20 rounded-full blur-3xl"
-            animate={{ x: [0, -50, 30, 0], y: [0, 40, -30, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
-
+      <main className="relative p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto min-h-screen">
         <AnimatePresence mode="wait">
 
           {/* ── Upload ── */}
@@ -144,9 +131,7 @@ export default function NewAnalysisPage() {
               transition={{ duration: 0.5 }}
             >
               <div className="space-y-2">
-                <h2 className="font-display text-3xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                  New Analysis
-                </h2>
+                <h1 className="text-3xl font-bold text-foreground">New Analysis</h1>
                 <p className="text-muted-foreground">
                   Upload an MSME loan agreement to detect predatory clauses and RBI violations.
                 </p>
@@ -191,9 +176,9 @@ export default function NewAnalysisPage() {
               >
                 <motion.button
                   onClick={reset}
-                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold shadow-md"
+                  whileHover={{ scale: 1.03, boxShadow: 'var(--shadow-lg)' }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   Analyse Another Document
                 </motion.button>
@@ -212,21 +197,23 @@ export default function NewAnalysisPage() {
               transition={{ duration: 0.4 }}
             >
               <div className="text-center space-y-3 max-w-md">
-                <div className="text-5xl">⚠️</div>
-                <h3 className="text-xl font-bold text-[#7c2d2d]">Analysis Failed</h3>
-                <p className="text-sm text-[#6b7280] leading-relaxed">{error}</p>
-                <p className="text-xs text-[#6b7280]">
+                <div className="w-14 h-14 mx-auto rounded-full bg-sev-critical-bg border border-sev-critical-border flex items-center justify-center">
+                  <AlertTriangle className="w-6 h-6 text-sev-critical" />
+                </div>
+                <h3 className="text-xl font-bold text-sev-critical">Analysis Failed</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{error}</p>
+                <p className="text-xs text-muted-foreground">
                   Make sure the backend is running:&nbsp;
-                  <code className="bg-[rgba(0,66,37,0.08)] px-2 py-0.5 rounded text-[#004225] font-mono">
-                    CLASSIFIER_MODE=ml uvicorn main:app --reload
+                  <code className="num bg-primary/6 px-2 py-0.5 rounded text-primary">
+                    uvicorn main:app --reload --port 8000
                   </code>
                 </p>
               </div>
               <motion.button
                 onClick={reset}
-                className="px-6 py-3 rounded-lg bg-[#004225] text-[#f4f1ea] font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold shadow-md"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
                 Try Again
               </motion.button>

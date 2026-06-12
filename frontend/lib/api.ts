@@ -193,8 +193,8 @@ export async function getHistory(params?: {
       ? mockHistoryDocuments.filter(
           d =>
             d.name.toLowerCase().includes(search) ||
-            d.lenderName.toLowerCase().includes(search) ||
-            d.demographics.businessName.toLowerCase().includes(search),
+            (d.lenderName ?? '').toLowerCase().includes(search) ||
+            (d.demographics?.businessName ?? '').toLowerCase().includes(search),
         )
       : mockHistoryDocuments;
     return { documents: filtered, total: filtered.length };
@@ -239,6 +239,19 @@ export async function getHistoryDocument(id: string): Promise<HistoryDocument> {
 }
 
 /* ─────────────────────────────────────────────
+   7. Delete a history document
+   DELETE /api/documents/:id
+   ───────────────────────────────────────────── */
+
+export async function deleteHistoryDocument(id: string): Promise<void> {
+  if (USE_MOCK) {
+    await delay(200);
+    return;
+  }
+  await request<{ status: string }>(`/documents/${id}`, { method: 'DELETE' });
+}
+
+/* ─────────────────────────────────────────────
    Mappers — API wire format → UI types
    ───────────────────────────────────────────── */
 
@@ -253,23 +266,14 @@ function mapHistorySummary(s: HistoryDocumentSummary): HistoryDocument {
   return {
     id:             s.id,
     name:           s.documentName,
-    lenderName:     s.lenderName,
     analyzedAt:     new Date(s.analyzedAt),
     riskLevel:      s.riskLevel,
     riskScore:      s.riskScore,
-    predatoryScore: s.predatoryScore,
-    size:           s.fileSize,
     clauseBreakdown: s.clauseBreakdown,
     rbiViolations:  s.rbiViolations,
-    statedRate:     s.statedRate,
-    effectiveRate:  s.effectiveRate,
-    loanAmount:     s.loanAmount,
-    tenure:         s.tenure,
-    totalRepayable: s.totalRepayable,
-    demographics:   s.demographics,
-    keyFlags:       s.keyFlags,
+    totalClauses:   s.totalClauses,
+    reportId:       s.reportId,
     // Full analysis loaded on demand via getHistoryDocument()
-    analysis:       mockAnalysisResult, // placeholder until loaded
   };
 }
 

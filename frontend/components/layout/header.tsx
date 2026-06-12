@@ -1,9 +1,32 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Menu, Plus } from 'lucide-react';
+import { Menu, Moon, Plus, Sun } from 'lucide-react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import { PrismLogo } from './prism-logo';
+
+function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="w-9 h-9" />;
+
+  const isDark = resolvedTheme === 'dark';
+  return (
+    <motion.button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="p-2 rounded-md border border-border bg-card text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors"
+      whileHover={{ scale: 1.06 }}
+      whileTap={{ scale: 0.92 }}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Light mode' : 'Dark mode'}
+    >
+      {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </motion.button>
+  );
+}
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -13,30 +36,21 @@ interface HeaderProps {
 export function Header({ onMenuClick, showMenu = true }: HeaderProps) {
   return (
     <motion.header
-      className="sticky top-0 z-40"
-      style={{
-        background: '#004225',
-        borderBottom: '1px solid rgba(201,168,76,0.25)',
-      }}
+      className="sticky top-0 z-40 bg-background/85 backdrop-blur-md border-b border-border"
       initial={{ y: -8, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Champagne gold top line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px]"
-        style={{ background: 'linear-gradient(90deg, transparent, #c9a84c 30%, #e2c97e 50%, #c9a84c 70%, transparent)' }}
-      />
+      {/* Champagne gold top hairline — the one piece of ornament */}
+      <div className="absolute top-0 left-0 right-0 hairline-gold" />
 
-      <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8" style={{ height: '60px' }}>
-
+      <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-[60px]">
         {/* Logo + wordmark */}
         <div className="flex items-center gap-3">
           {showMenu && (
             <motion.button
               onClick={onMenuClick}
-              className="lg:hidden p-2 rounded-lg transition-colors"
-              style={{ color: 'rgba(232,240,235,0.7)' }}
+              className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors"
               whileTap={{ scale: 0.9 }}
               aria-label="Toggle menu"
             >
@@ -46,72 +60,27 @@ export function Header({ onMenuClick, showMenu = true }: HeaderProps) {
 
           <Link href="/" className="flex items-center gap-3 group">
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-              <PrismLogo size={30} animated />
+              <PrismLogo size={28} animated />
             </motion.div>
 
-            <div className="flex flex-col leading-none">
-              <span
-                style={{
-                  fontFamily: "'DM Serif Display', Georgia, serif",
-                  fontSize: '19px',
-                  color: '#f4f1ea',
-                  letterSpacing: '0.08em',
-                  fontWeight: 400,
-                }}
-              >
+            <div className="flex flex-col leading-none gap-0.5">
+              <span className="text-[17px] font-bold tracking-[0.14em] text-foreground">
                 PRISM
               </span>
-              <span
-                style={{
-                  fontFamily: "'DM Serif Display', Georgia, serif",
-                  fontSize: '9px',
-                  color: 'rgba(201,168,76,0.85)',
-                  letterSpacing: '0.12em',
-                  fontWeight: 400,
-                }}
-              >
+              <span className="label-caps !text-[8.5px] !tracking-[0.16em] !text-gold-text">
                 Predatory Risk Intelligence
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Centre tagline */}
-        <div className="hidden lg:flex items-center">
-          <motion.span
-            style={{
-              fontFamily: "'DM Serif Display', Georgia, serif",
-              fontSize: '11px',
-              color: 'rgba(201,168,76,0.6)',
-              letterSpacing: '0.14em',
-              fontStyle: 'italic',
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            for Smart MSME Lending
-          </motion.span>
-        </div>
-
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          <ThemeToggle />
           <Link href="/new">
             <motion.div
-              className="flex items-center gap-1.5 px-4 py-2 rounded cursor-pointer"
-              style={{
-                background: 'rgba(201,168,76,0.15)',
-                border: '1px solid rgba(201,168,76,0.4)',
-                color: '#e2c97e',
-                fontFamily: "'DM Serif Display', Georgia, serif",
-                fontSize: '13px',
-                letterSpacing: '0.04em',
-              }}
-              whileHover={{
-                background: 'rgba(201,168,76,0.25)',
-                borderColor: 'rgba(201,168,76,0.7)',
-                scale: 1.02,
-              }}
+              className="flex items-center gap-1.5 pl-3.5 pr-4 py-2 rounded-full cursor-pointer bg-primary text-primary-foreground text-[13px] font-semibold shadow-sm"
+              whileHover={{ scale: 1.03, boxShadow: 'var(--shadow-md)' }}
               whileTap={{ scale: 0.97 }}
             >
               <Plus className="w-3.5 h-3.5" />

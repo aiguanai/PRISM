@@ -17,12 +17,13 @@ PDF sections:
 import os
 import json
 import uuid
-import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
-REPORT_DIR = Path(os.getenv("PRISM_REPORT_DIR", tempfile.gettempdir())) / "prism_reports"
+from config import settings
+
+REPORT_DIR = Path(os.getenv("PRISM_REPORT_DIR", settings.REPORT_DIR))
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Severity display colours (RGB tuples for ReportLab)
@@ -82,6 +83,41 @@ def get_report_path(report_id: str) -> Path:
     return path if path.exists() else None
 
 
+def report_path_for(report_id: str) -> str:
+    """Expected PDF path for a report_id (whether or not the file exists yet)."""
+    return str(REPORT_DIR / f"{report_id}.pdf")
+
+
+def regenerate_report(results: List[Dict], filename: str, report_id: str) -> str:
+    """Re-create an expired PDF from stored analysis results. Returns the path."""
+    total    = len(results)
+    critical = sum(1 for r in results if r.get("risk_level") == "CRITICAL")
+    high     = sum(1 for r in results if r.get("risk_level") == "HIGH")
+    medium   = sum(1 for r in results if r.get("risk_level") == "MEDIUM")
+    safe     = sum(1 for r in results if r.get("risk_level") == "LOW")
+    _generate_pdf(results, filename, critical, high, medium, total, safe, report_id=report_id)
+    return report_path_for(report_id)
+
+
+def cleanup_expired_reports(ttl_hours: int = None) -> int:
+    """Delete PDFs older than the TTL. Returns number deleted."""
+    import time
+
+    ttl = (ttl_hours if ttl_hours is not None else settings.REPORT_TTL_HOURS) * 3600
+    now = time.time()
+    deleted = 0
+    for pdf in REPORT_DIR.glob("*.pdf"):
+        try:
+            if now - pdf.stat().st_mtime > ttl:
+                pdf.unlink()
+                deleted += 1
+        except OSError:
+            pass
+    if deleted:
+        print(f"[report_gen] Cleaned up {deleted} expired report(s)")
+    return deleted
+
+
 # ── PDF generation (ReportLab) ────────────────────────────────────────────────
 
 def _generate_pdf(
@@ -92,9 +128,10 @@ def _generate_pdf(
     medium: int,
     total: int,
     safe: int = 0,
+    report_id: str = None,
 ) -> str:
     """Generate the PDF and return its report_id UUID."""
-    report_id = uuid.uuid4().hex
+    report_id = report_id or uuid.uuid4().hex
     out_path  = REPORT_DIR / f"{report_id}.pdf"
 
     try:

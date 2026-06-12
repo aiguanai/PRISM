@@ -6,7 +6,8 @@ import {
   Download, ChevronRight,
 } from 'lucide-react';
 import { useState } from 'react';
-import { DocumentAnalysis, Clause } from '@/lib/types';
+import { DocumentAnalysis } from '@/lib/types';
+import { useSettings } from '@/lib/settings';
 import { RiskScoreCard } from './risk-score-card';
 import { ClauseCard } from './clause-card';
 
@@ -15,16 +16,31 @@ interface ResultsDashboardProps {
   documentId?: string;
 }
 
-const severityColors = {
-  critical: { text: 'text-[#7c2d2d]', bg: 'bg-[#7c2d2d]/8', border: 'border-[#7c2d2d]/25' },
-  high: { text: 'text-[#9b3a2a]', bg: 'bg-[#9b3a2a]/8', border: 'border-[#9b3a2a]/25' },
-  medium: { text: 'text-[#8a5c00]', bg: 'bg-[#8a5c00]/6', border: 'border-[#8a5c00]/22' },
+type Sev = 'critical' | 'high' | 'medium' | 'low';
+
+const sevText: Record<Sev, string> = {
+  critical: 'text-sev-critical',
+  high:     'text-sev-high',
+  medium:   'text-sev-medium',
+  low:      'text-sev-low',
+};
+const sevDot: Record<Sev, string> = {
+  critical: 'bg-sev-critical',
+  high:     'bg-sev-high',
+  medium:   'bg-sev-medium',
+  low:      'bg-sev-low',
+};
+const sevCard: Record<Exclude<Sev, 'low'>, string> = {
+  critical: 'bg-sev-critical-bg border-sev-critical-border',
+  high:     'bg-sev-high-bg border-sev-high-border',
+  medium:   'bg-sev-medium-bg border-sev-medium-border',
 };
 
 export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps) {
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab]             = useState<'clauses' | 'rbi'>('clauses');
   const [downloading, setDownloading]         = useState(false);
+  const [settings]                            = useSettings();
 
   const handleExport = async () => {
     if (!documentId) return;
@@ -50,9 +66,16 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
   };
 
   const criticalClauses = analysis.clauses.filter((c) => c.riskLevel === 'critical');
-  const highClauses = analysis.clauses.filter((c) => c.riskLevel === 'high');
-  const mediumClauses = analysis.clauses.filter((c) => c.riskLevel === 'medium');
-  const lowClauses = analysis.clauses.filter((c) => c.riskLevel === 'low');
+  const highClauses     = analysis.clauses.filter((c) => c.riskLevel === 'high');
+  const mediumClauses   = analysis.clauses.filter((c) => c.riskLevel === 'medium');
+  const lowClauses = settings.showSafeClauses
+    ? analysis.clauses.filter((c) => c.riskLevel === 'low')
+    : [];
+
+  const overall = analysis.overallRisk.level as Sev;
+  const predLevel: Sev = analysis.predatoryScore >= 40 ? 'critical' : analysis.predatoryScore >= 20 ? 'high' : analysis.predatoryScore >= 8 ? 'medium' : 'low';
+  const rbiLevel: Sev = analysis.rbiViolations.length >= 5 ? 'critical' : analysis.rbiViolations.length >= 2 ? 'high' : analysis.rbiViolations.length >= 1 ? 'medium' : 'low';
+  const flaggedLevel: Sev = criticalClauses.length > 0 ? 'critical' : highClauses.length > 0 ? 'high' : 'low';
 
   const tabs = [
     { id: 'clauses', label: 'Clause Analysis', count: analysis.clauses.length },
@@ -60,77 +83,37 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
   ] as const;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex-1 space-y-6 min-w-0 w-full">
+    <div className="space-y-6 w-full">
 
       {/* ── Document header ── */}
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-[rgba(201,168,76,0.15)]"
-        style={{ background: '#ede9df' }}
-        initial={{ opacity: 0, y: 24, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="card-elevated relative overflow-hidden"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Animated top bar */}
-        <motion.div
-          className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-[#004225] via-[#c9a84c] to-[#7c2d2d]"
-          initial={{ scaleX: 0, originX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        />
-        {/* Ambient glow */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(248,113,113,0.06), transparent 60%)' }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 4, repeat: Infinity }}
-        />
-
-        <div className="relative p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <div className={`absolute top-0 left-0 right-0 h-[2px] ${sevDot[overall]}`} />
+        <div className="p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2 mb-2">
-              <motion.span
-                className={`text-xs font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                  analysis.overallRisk.level === 'critical' ? 'bg-[#7c2d2d]/10 text-[#7c2d2d] border border-[#7c2d2d]/25' :
-                  analysis.overallRisk.level === 'high'     ? 'bg-[#9b3a2a]/10 text-[#9b3a2a] border border-[#9b3a2a]/25' :
-                  analysis.overallRisk.level === 'medium'   ? 'bg-[#8a5c00]/10 text-[#8a5c00] border border-[#8a5c00]/25' :
-                                                              'bg-[#1a5c38]/10 text-[#1a5c38] border border-[#1a5c38]/25'
-                }`}
-                animate={{ boxShadow: ['0 0 0px rgba(248,113,113,0)', '0 0 12px rgba(248,113,113,0.3)', '0 0 0px rgba(248,113,113,0)'] }}
-                transition={{ duration: 2.5, repeat: Infinity }}
-              >
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider border ${overall === 'low' ? 'bg-sev-low-bg border-sev-low-border text-sev-low' : sevCard[overall as Exclude<Sev,'low'>] + ' ' + sevText[overall]}`}>
                 {analysis.overallRisk.category}
-              </motion.span>
-              <span className="text-xs text-[#6b7280]">
+              </span>
+              <span className="num text-xs text-muted-foreground">
                 {new Date(analysis.analyzedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
             </div>
-            <motion.h1
-              className="font-display text-2xl text-[#1a1f2e]"
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-            >
-              {analysis.documentName}
-            </motion.h1>
-            <motion.p
-              className="text-sm text-[#6b7280]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.25 }}
-            >
-              Lender: <span className="text-[#1a1f2e] font-medium">{analysis.lenderName}</span>
-              &nbsp;·&nbsp;{analysis.clauses.length} clauses analysed
-            </motion.p>
+            <h1 className="text-2xl font-bold text-foreground">{analysis.documentName}</h1>
+            <p className="text-sm text-muted-foreground">
+              Lender: <span className="text-foreground font-medium">{analysis.lenderName}</span>
+              &nbsp;·&nbsp;<span className="num">{analysis.clauses.length}</span> clauses analysed
+            </p>
           </div>
           <motion.button
             onClick={handleExport}
             disabled={downloading || !documentId}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-[rgba(0,66,37,0.15)] bg-[rgba(0,66,37,0.06)] hover:bg-[rgba(0,66,37,0.08)] text-[#1a1f2e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            whileHover={!downloading ? { scale: 1.05 } : undefined}
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border border-border bg-card hover:border-accent/50 text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+            whileHover={!downloading ? { scale: 1.03 } : undefined}
             whileTap={!downloading ? { scale: 0.97 } : undefined}
           >
             <Download className="w-4 h-4" />
@@ -147,15 +130,15 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
         transition={{ delay: 0.1 }}
       >
         {[
-          { label: 'Risk Score',      score: analysis.overallRisk.score,               level: analysis.overallRisk.level as 'critical'|'high'|'medium'|'low', isLarge: true },
-          { label: 'Predatory Index', score: analysis.predatoryScore,                  level: (analysis.predatoryScore >= 40 ? 'critical' : analysis.predatoryScore >= 20 ? 'high' : analysis.predatoryScore >= 8 ? 'medium' : 'low') as 'critical'|'high'|'medium'|'low', isLarge: false },
-          { label: 'RBI Violations',  score: analysis.rbiViolations.length,            level: (analysis.rbiViolations.length >= 5 ? 'critical' : analysis.rbiViolations.length >= 2 ? 'high' : analysis.rbiViolations.length >= 1 ? 'medium' : 'low') as 'critical'|'high'|'medium'|'low', isLarge: false },
-          { label: 'Clauses Flagged', score: criticalClauses.length + highClauses.length, level: (criticalClauses.length > 0 ? 'critical' : highClauses.length > 0 ? 'high' : 'low') as 'critical'|'high'|'medium'|'low', isLarge: false },
+          { label: 'Risk Score',      score: analysis.overallRisk.score,                 level: overall,      isLarge: true },
+          { label: 'Predatory Index', score: analysis.predatoryScore,                    level: predLevel,    isLarge: false },
+          { label: 'RBI Violations',  score: analysis.rbiViolations.length,              level: rbiLevel,     isLarge: false },
+          { label: 'Clauses Flagged', score: criticalClauses.length + highClauses.length, level: flaggedLevel, isLarge: false },
         ].map((card, i) => (
           <motion.div
             key={card.label}
-            initial={{ opacity: 0, y: 16, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.07 }}
           >
             <RiskScoreCard {...card} />
@@ -165,44 +148,29 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
 
       {/* ── Key findings ── */}
       <motion.div
-        className="rounded-2xl border border-[rgba(201,168,76,0.15)] overflow-hidden"
-        style={{ background: '#ede9df' }}
-        initial={{ opacity: 0, y: 16 }}
+        className="card-elevated overflow-hidden"
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <div className="flex items-center gap-2 px-6 py-4 border-b border-[rgba(201,168,76,0.12)]">
-          <motion.div
-            animate={{ rotate: [0, 15, -15, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <AlertCircle className="w-4 h-4 text-[#7c2d2d]" />
-          </motion.div>
-          <h2 className="text-sm font-bold text-[#1a1f2e]">Key Findings</h2>
-          <motion.span
-            className="ml-auto text-xs font-bold text-[#7c2d2d] bg-[#7c2d2d]/8 px-2 py-0.5 rounded-full border border-[#7c2d2d]/25"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
+        <div className="flex items-center gap-2 px-6 py-4 border-b border-border">
+          <AlertCircle className="w-4 h-4 text-sev-critical" />
+          <h2 className="text-sm font-semibold text-foreground">Key Findings</h2>
+          <span className="num ml-auto text-xs font-semibold text-sev-critical bg-sev-critical-bg px-2 py-0.5 rounded-full border border-sev-critical-border">
             {analysis.keyFindings.length} issues
-          </motion.span>
+          </span>
         </div>
         <div className="p-6 grid sm:grid-cols-2 gap-3">
           {analysis.keyFindings.map((finding, i) => (
             <motion.div
               key={i}
-              className="flex items-start gap-3 p-3 rounded-xl hover:bg-[rgba(0,66,37,0.05)] transition-colors"
-              initial={{ opacity: 0, x: -12 }}
+              className="flex items-start gap-3 p-3 rounded-md hover:bg-muted/50 transition-colors"
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.25 + i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ x: 3 }}
+              transition={{ delay: 0.25 + i * 0.05, duration: 0.3 }}
             >
-              <motion.span
-                className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#7c2d2d]"
-                animate={{ scale: [1, 1.4, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-              />
-              <p className="text-sm text-[#6b7280] leading-relaxed">{finding}</p>
+              <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-sev-critical" />
+              <p className="text-sm text-muted-foreground leading-relaxed">{finding}</p>
             </motion.div>
           ))}
         </div>
@@ -210,31 +178,28 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
 
       {/* ── Tabs ── */}
       <div>
-        <div className="flex gap-1 p-1 rounded-xl border border-[rgba(201,168,76,0.15)] bg-[rgba(0,66,37,0.04)] w-fit mb-6">
+        <div className="flex gap-1 p-1 rounded-full border border-border bg-card w-fit mb-6 shadow-sm">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
-                  ? 'text-[#1a1f2e]'
-                  : 'text-[#6b7280] hover:text-[#1a1f2e]'
-                }`}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeTab === tab.id ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               {activeTab === tab.id && (
                 <motion.div
-                  className="absolute inset-0 rounded-lg"
-                  style={{ background: 'linear-gradient(135deg, rgba(0,66,37,0.12), rgba(201,168,76,0.08))' }}
+                  className="absolute inset-0 rounded-full bg-primary"
                   layoutId="activeTab"
                   transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                 />
               )}
               <span className="relative">{tab.label}</span>
-              {tab.count !== null && (
-                <span className={`relative text-xs px-1.5 py-0.5 rounded-md font-bold ${activeTab === tab.id ? 'bg-[#7c2d2d]/12 text-[#7c2d2d]' : 'bg-[rgba(0,66,37,0.06)] text-[#6b7280]'
-                  }`}>
-                  {tab.count}
-                </span>
-              )}
+              <span className={`num relative text-xs px-1.5 py-0.5 rounded-full font-semibold ${
+                activeTab === tab.id ? 'bg-white/20 text-primary-foreground' : 'bg-muted text-muted-foreground'
+              }`}>
+                {tab.count}
+              </span>
             </button>
           ))}
         </div>
@@ -251,17 +216,17 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
-              {[
-                { list: criticalClauses, label: 'Critical', color: 'text-[#7c2d2d]', dot: 'bg-[#7c2d2d]' },
-                { list: highClauses, label: 'High Risk', color: 'text-[#9b3a2a]', dot: 'bg-[#9b3a2a]' },
-                { list: mediumClauses, label: 'Medium', color: 'text-[#8a5c00]', dot: 'bg-[#8a5c00]' },
-                { list: lowClauses, label: 'Low Risk', color: 'text-[#1a5c38]', dot: 'bg-[#1a5c38]' },
-              ].map(({ list, label, color, dot }) =>
+              {([
+                { list: criticalClauses, label: 'Critical', sevKey: 'critical' as Sev },
+                { list: highClauses,     label: 'High Risk', sevKey: 'high' as Sev },
+                { list: mediumClauses,   label: 'Medium',    sevKey: 'medium' as Sev },
+                { list: lowClauses,      label: 'Low Risk',  sevKey: 'low' as Sev },
+              ]).map(({ list, label, sevKey }) =>
                 list.length > 0 ? (
                   <div key={label} className="space-y-3">
-                    <div className={`flex items-center gap-2 text-sm font-bold ${color}`}>
-                      <span className={`w-2 h-2 rounded-full ${dot}`} />
-                      {label} — {list.length} clause{list.length > 1 ? 's' : ''}
+                    <div className={`flex items-center gap-2 text-sm font-semibold ${sevText[sevKey]}`}>
+                      <span className={`w-2 h-2 rounded-full ${sevDot[sevKey]}`} />
+                      {label} — <span className="num">{list.length}</span> clause{list.length > 1 ? 's' : ''}
                     </div>
                     <div className="space-y-2">
                       {list.map((clause, i) => (
@@ -290,49 +255,45 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
-              <div className="rounded-xl border border-[#7c2d2d]/20 bg-[#7c2d2d]/5 p-4 flex items-start gap-3">
-                <ShieldAlert className="w-5 h-5 text-[#7c2d2d] flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-[#6b7280] leading-relaxed">
+              <div className="card-elevated p-4 flex items-start gap-3">
+                <ShieldAlert className="w-5 h-5 text-sev-critical flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   The following clauses have been identified as potential violations of RBI guidelines and Indian lending law.
                   These can be cited when negotiating with the lender or filing a complaint with the Banking Ombudsman.
                 </p>
               </div>
 
               {analysis.rbiViolations.map((v, i) => {
-                const c = severityColors[v.severity];
+                const sk = v.severity as Sev;
                 const triggeredClause = analysis.clauses.find(cl => cl.id === v.clauseRef);
                 return (
                   <motion.div
                     key={v.id}
-                    className={`rounded-2xl border ${c.border} ${c.bg} p-5 space-y-3`}
-                    initial={{ opacity: 0, x: -16 }}
+                    className="card-elevated p-5 space-y-3"
+                    initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: Math.min(i * 0.05, 0.6) }}
                   >
-                    {/* Rule header */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <FileWarning className={`w-4 h-4 flex-shrink-0 mt-0.5 ${c.text}`} />
+                        <FileWarning className={`w-4 h-4 flex-shrink-0 mt-0.5 ${sevText[sk]}`} />
                         <div>
-                          <p className={`text-xs font-bold uppercase tracking-wider ${c.text} mb-1`}>
+                          <p className={`text-[11px] font-semibold uppercase tracking-wider ${sevText[sk]} mb-1`}>
                             {v.severity} violation · {v.regulation}
                           </p>
-                          <p className="text-sm font-semibold text-[#1a1f2e]">{v.description}</p>
+                          <p className="text-sm font-semibold text-foreground">{v.description}</p>
                         </div>
                       </div>
-                      <span className="flex-shrink-0 text-xs text-[#6b7280] bg-[rgba(0,66,37,0.06)] px-2 py-1 rounded-lg border border-[rgba(0,66,37,0.15)] whitespace-nowrap">
+                      <span className="num flex-shrink-0 text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md border border-border whitespace-nowrap">
                         {v.clauseRef}
                       </span>
                     </div>
 
-                    {/* The actual clause text that triggered this rule */}
                     {triggeredClause && (
                       <div className="pl-7">
-                        <p className="text-xs font-bold text-[#6b7280] uppercase tracking-widest mb-2">
-                          Problematic Clause
-                        </p>
-                        <div className={`rounded-lg border-l-4 ${c.border} bg-[rgba(0,0,0,0.025)] p-3`}>
-                          <p className="text-xs text-[#1a1f2e] leading-relaxed font-mono break-words">
+                        <p className="label-caps mb-2">Problematic Clause</p>
+                        <div className={`rounded-md border-l-4 p-3 bg-muted/50 ${sevDot[sk].replace('bg-', 'border-')}`}>
+                          <p className="num text-xs text-foreground leading-relaxed break-words">
                             &ldquo;{triggeredClause.content.length > 350
                               ? triggeredClause.content.slice(0, 350) + '…'
                               : triggeredClause.content}&rdquo;
@@ -344,12 +305,12 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
                 );
               })}
 
-              <div className="rounded-xl border border-[rgba(201,168,76,0.15)] bg-[rgba(0,66,37,0.04)] p-4">
-                <p className="text-xs font-bold text-[#6b7280] uppercase tracking-widest mb-2">Legal References</p>
+              <div className="card-elevated p-4">
+                <p className="label-caps mb-2">Legal References</p>
                 <div className="space-y-1.5">
                   {analysis.legalReferences.map((ref, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs text-[#6b7280]">
-                      <ChevronRight className="w-3 h-3 flex-shrink-0 text-[#004225]" />
+                    <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <ChevronRight className="w-3 h-3 flex-shrink-0 text-primary" />
                       {ref}
                     </div>
                   ))}
@@ -358,11 +319,8 @@ export function ResultsDashboard({ analysis, documentId }: ResultsDashboardProps
             </motion.div>
           )}
 
-
         </AnimatePresence>
       </div>
-      </div>
-      
     </div>
   );
 }

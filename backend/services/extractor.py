@@ -90,13 +90,20 @@ def _pymupdf_extract(path: str) -> str:
         return ""
 
 
+MAX_OCR_PAGES = int(os.getenv("MAX_OCR_PAGES", "30"))
+
+
 def _pdf_ocr(path: str) -> str:
     """Render each PDF page as an image then run Tesseract OCR."""
     try:
         import fitz
         doc = fitz.open(path)
+        if doc.page_count > MAX_OCR_PAGES:
+            print(f"[extractor] OCR capped at {MAX_OCR_PAGES} pages (document has {doc.page_count})")
         results = []
-        for page in doc:
+        for i, page in enumerate(doc):
+            if i >= MAX_OCR_PAGES:
+                break
             pix = page.get_pixmap(dpi=200)
             img_bytes = pix.tobytes("png")
             results.append(_ocr_bytes(img_bytes))

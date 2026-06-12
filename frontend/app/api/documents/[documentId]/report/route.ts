@@ -10,11 +10,9 @@ export async function GET(
   const { documentId } = await params;
 
   const stored = resultStore.get(documentId);
-  if (!stored) {
-    return NextResponse.json({ code: 'NOT_FOUND', message: 'Analysis not found.' }, { status: 404 });
-  }
-
-  const reportId = (stored.backendResponse as any)?.report_id;
+  // In-memory result has the report_id; for history items the documentId IS
+  // the backend analysis/report id (the backend regenerates expired PDFs).
+  const reportId = (stored?.backendResponse as any)?.report_id ?? documentId;
   if (!reportId) {
     return NextResponse.json({ code: 'NO_REPORT', message: 'PDF report was not generated.' }, { status: 404 });
   }

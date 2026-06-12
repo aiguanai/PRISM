@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Set CLASSIFIER_MODE=ml once model weights are mounted below
+      CLASSIFIER_MODE: ${CLASSIFIER_MODE:-heuristic}
+      ALLOWED_ORIGINS: http://localhost:3000,http://frontend:3000
+    volumes:
+      - prism-data:/data          # SQLite DB + generated PDF reports
+      - ./model:/model:ro         # trained model weights (download from HuggingFace)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      BACKEND_URL: http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  prism-data:

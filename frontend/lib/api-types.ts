@@ -139,34 +139,17 @@ export interface HistoryDocumentSummary {
   id:             string;
   documentId:     string;
   documentName:   string;
-  lenderName:     string;
   analyzedAt:     string;   // ISO 8601
   riskLevel:      RiskLevel;
   riskScore:      number;
-  predatoryScore: number;
-  fileSize:       string;
   rbiViolations:  number;
-  statedRate:     number;
-  effectiveRate:  number;
-  loanAmount:     number;
-  tenure:         number;
-  totalRepayable: number;
+  totalClauses:   number;
+  reportId?:      string;
   clauseBreakdown: {
     critical: number;
     high:     number;
     medium:   number;
     low:      number;
-  };
-  keyFlags: string[];
-  demographics: {
-    businessName:      string;
-    sector:            string;
-    yearsInOperation:  number;
-    annualTurnover:    string;
-    state:             string;
-    borrowerType:      'Micro' | 'Small' | 'Medium';
-    loanPurpose:       string;
-    firstTimeBorrower: boolean;
   };
 }
 

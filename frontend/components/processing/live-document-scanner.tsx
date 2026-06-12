@@ -9,8 +9,7 @@ interface LiveDocumentScannerProps {
   phase: string;
 }
 
-export function LiveDocumentScanner({ progress, phase }: LiveDocumentScannerProps) {
-  // Deterministic document structure
+export function LiveDocumentScanner({ progress }: LiveDocumentScannerProps) {
   const paragraphs = useMemo(() => [
     { id: 0, lines: [85, 90, 80, 45], isClause: false },
     { id: 1, lines: [95, 88, 92, 60], isClause: true, type: 'danger', label: 'Penal Interest' },
@@ -21,87 +20,71 @@ export function LiveDocumentScanner({ progress, phase }: LiveDocumentScannerProp
     { id: 6, lines: [85, 90, 80, 45], isClause: false },
   ], []);
 
-  // Map progress (0-100) to scanner top position (0-100%)
-  // Ensure scanner doesn't go completely off-screen until 100%
   const scannerPos = `${Math.min(progress, 100)}%`;
 
   return (
-    <div className="relative w-full mx-auto rounded-3xl border overflow-hidden"
-         style={{ 
-           background: 'rgba(255, 255, 255, 0.4)', 
-           borderColor: 'rgba(201,168,76,0.3)', 
-           boxShadow: '0 20px 40px rgba(0,66,37,0.08)' 
-         }}>
+    <div className="card-elevated relative w-full mx-auto overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-3 border-b flex items-center justify-between" 
-           style={{ background: 'rgba(250, 249, 246, 0.9)', borderColor: 'rgba(201,168,76,0.15)' }}>
+      <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-muted/40">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#004225]/10 flex items-center justify-center">
-            <Search className="w-3.5 h-3.5 text-[#004225]" />
+          <div className="w-7 h-7 rounded-md bg-primary/10 flex items-center justify-center">
+            <Search className="w-3.5 h-3.5 text-primary" />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-widest text-[#1a1f2e]">Document X-Ray</div>
+            <div className="label-caps !text-[10px]">Document X-Ray</div>
             <div className="text-[10px] text-muted-foreground font-medium">Live Clause Extraction</div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600">Active</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-sev-low-border bg-sev-low-bg">
+          <span className="w-1.5 h-1.5 rounded-full bg-sev-low animate-pulse" />
+          <span className="label-caps !text-[9px] !text-sev-low">Active</span>
         </div>
       </div>
 
-      {/* Document Body */}
-      <div className="relative p-6 sm:p-8 h-[480px] overflow-hidden bg-[#fdfdfc] font-mono">
-        {/* Watermark */}
+      {/* Document body */}
+      <div className="relative p-6 sm:p-8 h-[480px] overflow-hidden bg-card">
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
           <Search className="w-64 h-64" />
         </div>
 
         <div className="space-y-5 relative z-10">
           {paragraphs.map((p, pIndex) => {
-            // Determine if the scanner has passed this block
             const blockTop = (pIndex / paragraphs.length) * 100;
-            const isScanned = progress > blockTop + 5; // offset slightly for visual sync
+            const isScanned = progress > blockTop + 5;
             const isActiveClause = isScanned && p.isClause;
+            const danger = p.type === 'danger';
 
             return (
-              <div 
-                key={p.id} 
-                className={`relative p-3.5 rounded-xl transition-all duration-700 ${
-                  isActiveClause 
-                    ? (p.type === 'danger' ? 'bg-[#9b3a2a]/10 border-[#9b3a2a]/20' : 'bg-[#c9a84c]/10 border-[#c9a84c]/20') 
+              <div
+                key={p.id}
+                className={`relative p-3.5 rounded-lg border transition-all duration-700 ${
+                  isActiveClause
+                    ? (danger ? 'bg-sev-high-bg border-sev-high-border' : 'bg-sev-medium-bg border-sev-medium-border')
                     : 'bg-transparent border-transparent'
-                } border`}
+                }`}
               >
                 {isActiveClause && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -10, scale: 0.8 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     className="absolute -left-2 -top-2 flex items-center gap-1.5"
                   >
-                    <div className={`flex items-center justify-center w-6 h-6 rounded-full shadow-sm ${
-                      p.type === 'danger' ? 'bg-[#9b3a2a] text-white' : 'bg-[#c9a84c] text-white'
-                    }`}>
-                      {p.type === 'danger' ? <AlertTriangle className="w-3 h-3" /> : <Info className="w-3 h-3" />}
+                    <div className={`flex items-center justify-center w-6 h-6 rounded-full shadow-sm text-white ${danger ? 'bg-sev-high' : 'bg-sev-medium'}`}>
+                      {danger ? <AlertTriangle className="w-3 h-3" /> : <Info className="w-3 h-3" />}
                     </div>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
-                      p.type === 'danger' ? 'bg-[#9b3a2a]/10 text-[#9b3a2a]' : 'bg-[#c9a84c]/10 text-[#c9a84c]'
-                    }`}>
+                    <span className={`label-caps !text-[10px] px-2 py-0.5 rounded-full ${danger ? '!text-sev-high bg-sev-high-bg' : '!text-sev-medium bg-sev-medium-bg'}`}>
                       {p.label}
                     </span>
                   </motion.div>
                 )}
-                
+
                 {p.lines.map((width, lIndex) => (
-                  <div 
+                  <div
                     key={lIndex}
-                    className="h-2 rounded-full mb-3 last:mb-0 transition-colors duration-700"
-                    style={{ 
-                      width: `${width}%`,
-                      backgroundColor: isActiveClause 
-                        ? (p.type === 'danger' ? 'rgba(155,58,42,0.4)' : 'rgba(201,168,76,0.6)') 
-                        : 'rgba(0,66,37,0.06)'
-                    }}
+                    className={`h-2 rounded-full mb-3 last:mb-0 transition-colors duration-700 ${
+                      isActiveClause ? (danger ? 'bg-sev-high/40' : 'bg-sev-medium/50') : 'bg-muted'
+                    }`}
+                    style={{ width: `${width}%` }}
                   />
                 ))}
               </div>
@@ -109,22 +92,20 @@ export function LiveDocumentScanner({ progress, phase }: LiveDocumentScannerProp
           })}
         </div>
 
-        {/* Scanner Line */}
+        {/* Scanner line */}
         <motion.div
           className="absolute left-0 right-0 pointer-events-none z-20"
           style={{
             height: '140px',
-            top: scannerPos,
-            translateY: '-100%', // Bottom of the gradient aligns with progress
-            background: 'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.05) 50%, rgba(201,168,76,0.4) 100%)',
-            borderBottom: '2px solid #c9a84c',
+            translateY: '-100%',
+            background: 'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.05) 50%, rgba(201,168,76,0.35) 100%)',
+            borderBottom: '2px solid var(--accent)',
           }}
           initial={{ top: '0%' }}
           animate={{ top: scannerPos }}
           transition={{ duration: 0.3, ease: 'linear' }}
         >
-          {/* Glowing laser edge */}
-          <div className="absolute bottom-[-2px] left-0 right-0 h-[3px] bg-[#c9a84c] blur-[3px]" />
+          <div className="absolute bottom-[-2px] left-0 right-0 h-[3px] bg-accent blur-[3px]" />
           <div className="absolute bottom-[-1px] left-1/2 -translate-x-1/2 w-48 h-[2px] bg-white blur-[1px]" />
         </motion.div>
       </div>

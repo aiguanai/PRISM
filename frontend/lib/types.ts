@@ -120,20 +120,24 @@ export interface ClauseBreakdown {
 export interface HistoryDocument {
   id: string;
   name: string;
-  lenderName: string;
   analyzedAt: Date;
   riskLevel: 'critical' | 'high' | 'medium' | 'low';
   riskScore: number;
-  predatoryScore: number;
-  size: string;
   clauseBreakdown: ClauseBreakdown;
   rbiViolations: number;
-  statedRate: number;
-  effectiveRate: number;
-  loanAmount: number;
-  tenure: number;
-  totalRepayable: number;
-  demographics: BorrowerDemographics;
-  keyFlags: string[];
-  analysis: DocumentAnalysis;
+  totalClauses?: number;
+  reportId?: string;
+  /** Full analysis — loaded on demand when the detail panel opens */
+  analysis?: DocumentAnalysis;
+  /* ── Legacy mock-only fields (not produced by the real backend) ── */
+  lenderName?: string;
+  predatoryScore?: number;
+  size?: string;
+  statedRate?: number;
+  effectiveRate?: number;
+  loanAmount?: number;
+  tenure?: number;
+  totalRepayable?: number;
+  demographics?: BorrowerDemographics;
+  keyFlags?: string[];
 }

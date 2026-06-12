@@ -7,9 +7,17 @@ interface PrismLogoProps {
   animated?: boolean;
 }
 
+const facets = [
+  { d: 'M20 2 L2 28 L20 38 Z',   fill: '#00311b' }, // left dark
+  { d: 'M20 2 L38 28 L20 38 Z',  fill: '#004225' }, // right mid-green
+  { d: 'M2 28 L20 38 L14 44 Z',  fill: '#2d6a4f' }, // bottom-left sage
+  { d: 'M38 28 L20 38 L26 44 Z', fill: '#c9a84c' }, // bottom-right gold
+  { d: 'M14 44 L20 38 L26 44 Z', fill: '#8a6a1a' }, // bottom centre
+];
+
 /**
- * Geometric prism diamond — matches the uploaded brand logo.
- * Four facets: dark navy left, steel blue right, sky blue top, light cyan bottom-right.
+ * Geometric prism diamond. Facets shimmer ONCE on mount (staggered reveal),
+ * then rest — no infinite ambient animation.
  */
 export function PrismLogo({ size = 36, animated = true }: PrismLogoProps) {
   return (
@@ -20,41 +28,16 @@ export function PrismLogo({ size = 36, animated = true }: PrismLogoProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Left dark facet */}
-      <motion.path
-        d="M20 2 L2 28 L20 38 Z"
-        fill="#00311b"
-        animate={animated ? { opacity: [0.85, 1, 0.85] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      {/* Right mid-green facet */}
-      <motion.path
-        d="M20 2 L38 28 L20 38 Z"
-        fill="#004225"
-        animate={animated ? { opacity: [0.9, 1, 0.9] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-      />
-      {/* Bottom-left sage facet */}
-      <motion.path
-        d="M2 28 L20 38 L14 44 Z"
-        fill="#2d6a4f"
-        animate={animated ? { opacity: [0.8, 1, 0.8] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-      />
-      {/* Bottom-right gold facet */}
-      <motion.path
-        d="M38 28 L20 38 L26 44 Z"
-        fill="#c9a84c"
-        animate={animated ? { opacity: [0.85, 1, 0.85] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-      />
-      {/* Bottom centre connector */}
-      <motion.path
-        d="M14 44 L20 38 L26 44 Z"
-        fill="#8a6a1a"
-        animate={animated ? { opacity: [0.9, 1, 0.9] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-      />
+      {facets.map((f, i) => (
+        <motion.path
+          key={i}
+          d={f.d}
+          fill={f.fill}
+          initial={animated ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
+        />
+      ))}
     </svg>
   );
 }

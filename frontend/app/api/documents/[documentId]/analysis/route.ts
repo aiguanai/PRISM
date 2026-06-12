@@ -210,10 +210,29 @@ export async function GET(
 ) {
   const { documentId } = await params;
 
-  const stored = resultStore.get(documentId);
+  let stored = resultStore.get(documentId);
+  if (!stored) {
+    // Not in memory (fresh server / page refresh / history item) —
+    // fall back to the backend's persistent store.
+    const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8000';
+    try {
+      const res = await fetch(`${BACKEND_URL}/analyses/${documentId}`, { cache: 'no-store' });
+      if (res.ok) {
+        const a = await res.json();
+        stored = {
+          backendResponse: { results: a.results ?? [], summary: a.summary ?? {} },
+          documentName:    a.filename || 'Untitled document',
+          completedAt:     a.created_at ?? new Date().toISOString(),
+        };
+      }
+    } catch {
+      /* backend unreachable — fall through to 404 */
+    }
+  }
+
   if (!stored) {
     return NextResponse.json(
-      { code: 'NOT_FOUND', message: 'Analysis not ready. Poll /api/jobs/:jobId/status first.' },
+      { code: 'NOT_FOUND', message: 'Analysis not found. It may not have completed yet.' },
       { status: 404 },
     );
   }
